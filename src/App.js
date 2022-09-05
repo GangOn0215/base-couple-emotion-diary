@@ -10,7 +10,7 @@ import DiaryEditor from "./Components/Diary/Editor";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/">
       <div className="App">
         <Header />
         <article className="diary">
