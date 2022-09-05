@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/base-couple-emotion-diary/static/css/main.85caebe5.css",
+    "main.js": "/base-couple-emotion-diary/static/js/main.9ab7ca75.js",
+    "index.html": "/base-couple-emotion-diary/index.html",
+    "main.85caebe5.css.map": "/base-couple-emotion-diary/static/css/main.85caebe5.css.map",
+    "main.9ab7ca75.js.map": "/base-couple-emotion-diary/static/js/main.9ab7ca75.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.85caebe5.css",
+    "static/js/main.9ab7ca75.js"
+  ]
+}
