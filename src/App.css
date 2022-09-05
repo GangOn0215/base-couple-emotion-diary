@@ -2,17 +2,63 @@ body,
 head {
   margin: 0;
   padding: 0;
+  font-family: "PT Sans", sans-serif;
 }
 header,
 footer {
+  display: flex;
+  width: 100%;
   height: 15vh;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3em;
+  font-weight: bold;
   box-sizing: border-box;
+  background-color: #fff;
 }
 header {
   border-bottom: 2px solid #efefef;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+header nav {
+  width: 100%;
+  /* background-color: #ebebeb; */
+  border-top: 1.5px solid #f6f6f6;
+}
+header nav ul {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0px;
+}
+header nav ul li {
+  width: 100px;
+  text-align: center;
+  padding: 10px;
+}
+header nav ul li a {
+  text-decoration: none;
+  color: black;
+}
+header nav ul li a:hover {
+  color: #8d8d8d;
 }
 footer {
   border-top: 2px solid #efefef;
+}
+
+ol,
+ul {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.App .home {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 .App .diary {
   display: flex;
@@ -36,6 +82,12 @@ footer {
   box-sizing: border-box;
   resize: none;
   padding: 5px;
+  /* font-family: "PT Sans", "Hi Melody", sans-serif; */
+  font-family: "PT Sans", "Hi Melody", sans-serif;
+}
+.App .diary .editor input,
+.App .diary .editor textarea {
+  font-size: 1.1em;
 }
 .App .diary .editor button {
   height: 3rem;
