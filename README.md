@@ -27,3 +27,10 @@ emotion diary 를 따라하며 커플 다이어리의 기반을 다지고 있습
   - state, props 에 대해 배우고 state를 조금 더 효율적으로 사용하는 법을 배웠습니다.
   - useRef 를 통해 DOM 을 조작하는것에 대해 공부하였습니다.
   - react-router-dom 을 이용하여 page를 나눠서 작업 할려고 합니다. [`[React] react-router-dom v6 업그레이드 되면서 달라진 것들`](https://velog.io/@soryeongk/ReactRouterDomV6) 해당 블로그를 참고 하였습니다.
+
+- 2022/09/06
+  - js localStorage를 사용하여 데이터를 담아두었습니다
+    > (이제 브라우저를 껏다 켜도 데이터가 남아 있어요!)
+    
+  - 작성한 다이어리를 볼수있게 리스트 형식으로 만들어 두었습니다.
+  - 이제 다이어리 작성을 하면 리스트로 출력되며 브라우저를 껏다 켜도 데이터가 남아 있어요

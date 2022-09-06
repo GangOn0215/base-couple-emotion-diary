@@ -62,7 +62,7 @@ function App() {
     data.id = diaryIdx.current;
     setDiaryList([data, ...diaryList]);
   };
-
+  
   return (
     <BrowserRouter basename='/base-couple-emotion-diary/'>
       <div className='App'>
