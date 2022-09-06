@@ -1,15 +1,16 @@
-import { useState, useRef } from "react";
+import { useState, useRef } from 'react';
 
-const Editor = () => {
+const Editor = ({ writeList }) => {
   const inputAuthor = useRef();
   const inputTitle = useRef();
   const textareaContent = useRef();
 
   const [state, setState] = useState({
-    author: "",
-    title: "",
-    content: "",
+    author: '',
+    title: '',
+    content: '',
     emotion: 1,
+    createAt: new Date().getTime(),
   });
 
   const handleChangeState = (e) => {
@@ -38,38 +39,37 @@ const Editor = () => {
       return;
     }
 
-    console.log(state);
-    alert("welcome");
+    writeList(state);
   };
 
   return (
-    <div className="editor">
+    <div className='editor'>
       <h2>Today Diary</h2>
       <input
         ref={inputAuthor}
-        type="text"
-        name="author"
-        placeholder="author"
+        type='text'
+        name='author'
+        placeholder='author'
         value={state.author}
         onChange={handleChangeState}
       />
       <input
         ref={inputTitle}
-        type="text"
-        name="title"
-        placeholder="title"
+        type='text'
+        name='title'
+        placeholder='title'
         value={state.title}
         onChange={handleChangeState}
       />
       <textarea
         ref={textareaContent}
-        type="text"
-        name="content"
-        placeholder="content"
+        type='text'
+        name='content'
+        placeholder='content'
         value={state.content}
         onChange={handleChangeState}
       />
-      <select name="emotion" value={state.emotion} onChange={handleChangeState}>
+      <select name='emotion' value={state.emotion} onChange={handleChangeState}>
         <option value={1}>1</option>
         <option value={2}>2</option>
         <option value={3}>3</option>
