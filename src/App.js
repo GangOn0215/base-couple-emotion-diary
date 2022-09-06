@@ -33,16 +33,24 @@ function App() {
   // localStorage.setItem('diary', JSON.stringify(dummyList));
 
   useEffect(() => {
-    const initDiary = localStorage.getItem('diary');
-    console.log(localStorage.getItem('diary'));
-    if (initDiary !== '') {
-      setDiaryList(JSON.parse(initDiary));
+    let initDiary = localStorage.getItem('diary');
+    if (initDiary == null) {
+      return;
+    }
 
-      diaryIdx.current = JSON.parse(initDiary)[0]['id'];
+    initDiary = JSON.parse(initDiary);
+
+    setDiaryList(initDiary);
+
+    if (initDiary != null) {
+      diaryIdx.current = initDiary[0]['id'];
     }
   }, []);
 
   useEffect(() => {
+    if (diaryList === []) {
+      return;
+    }
     if (diaryList.length > 0) {
       localStorage.setItem('diary', JSON.stringify(diaryList));
     }

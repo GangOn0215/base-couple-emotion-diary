@@ -82,9 +82,20 @@ ul {
 	border: 1px solid #bcbcbc;
 	width: 400px;
 }
+
+@media (max-width: 765px) {
+	.App .diary {
+		width: 100%;
+	}
+	.App .diary .home .list-container .list-item {
+		width: 250px;
+	}
+}
+
 .App .diary .home .list-container .list-item p {
 	display: flex;
 	border-bottom: 1px solid #ececec;
+	flex-wrap: wrap;
 }
 .App .diary .home .list-container p:last-child {
 	border-bottom: none;
