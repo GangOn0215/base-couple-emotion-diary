@@ -1,10 +1,11 @@
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Editor = ({ writeList }) => {
   const inputAuthor = useRef();
   const inputTitle = useRef();
   const textareaContent = useRef();
-
+  const navigate = useNavigate();
   const [state, setState] = useState({
     author: '',
     title: '',
@@ -39,7 +40,18 @@ const Editor = ({ writeList }) => {
       return;
     }
 
+    alert('성공적으로 데이터를 추가 했습니다.');
     writeList(state);
+
+    // 데이터를 성공적으로 추가 했다면 초기화 시켜줍니다.
+    setState({
+      author: '',
+      title: '',
+      content: '',
+      emotion: 1,
+    });
+
+    navigate('/');
   };
 
   return (
