@@ -34,7 +34,7 @@ function App() {
 
   useEffect(() => {
     let initDiary = localStorage.getItem('diary');
-    if (initDiary == null) {
+    if (initDiary == null || initDiary.length === 0) {
       return;
     }
 
@@ -60,16 +60,31 @@ function App() {
     console.log(data);
     diaryIdx.current += 1;
     data.id = diaryIdx.current;
+
     setDiaryList([data, ...diaryList]);
   };
-  
+
+  const handleDelete = (dataId) => {
+    if (dataId <= 0) {
+      alert('조회한 정보를 찾을 수 없습니다.');
+      return;
+    }
+
+    let delList = diaryList.filter((item) => item.id !== dataId);
+
+    setDiaryList(delList);
+  };
+
   return (
     <BrowserRouter basename='/base-couple-emotion-diary/'>
       <div className='App'>
         <Header />
         <article className='diary'>
           <Routes>
-            <Route path='/' element={<DiaryList diaryList={diaryList} />} />
+            <Route
+              path='/'
+              element={<DiaryList diaryList={diaryList} deleteList={handleDelete} />}
+            />
             <Route path='/write' element={<DiaryEditor writeList={handleCreateList} />} />
           </Routes>
         </article>

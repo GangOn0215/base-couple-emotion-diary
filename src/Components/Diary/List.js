@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 
-const List = ({ diaryList }) => {
+const List = ({ diaryList, deleteList }) => {
+  const onClickDelete = (idx) => {
+    deleteList(idx);
+  };
   return (
     <div className='home'>
       <h2>Diary List</h2>
@@ -19,9 +22,12 @@ const List = ({ diaryList }) => {
             <p>
               <span>Emotion</span> {item.emotion}
             </p>
-            <p>
+            <p className='regdate'>
               <span>RegDate</span> {new Date(item.createAt).toDateString()}
             </p>
+            <div>
+              <button onClick={() => onClickDelete(item.id)}>delete</button>
+            </div>
           </div>
         ))}
       </div>
