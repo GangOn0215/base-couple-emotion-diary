@@ -42,7 +42,9 @@
 .diary .list .list-container p span {
 	width: 100px;
 }
-
+.diary .list .list-container .handleButton {
+	margin-top: 5px;
+}
 /* editor */
 .diary .editor {
 	display: flex;

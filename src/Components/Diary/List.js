@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-const List = ({ diaryList, deleteList }) => {
+const List = ({ diaryList, handleUpdate, handleDelete }) => {
   const onClickDelete = (idx) => {
-    deleteList(idx);
+    handleDelete(idx);
   };
+
   return (
     <div className='list'>
       <h2>Diary List</h2>
@@ -25,11 +27,17 @@ const List = ({ diaryList, deleteList }) => {
             <p className='regdate'>
               <span>RegDate</span> {new Date(item.createAt).toDateString()}
             </p>
-            <div>
+            <div className='handleButton'>
               <button onClick={() => onClickDelete(item.id)}>delete</button>
+              <button>
+                <Link to={`/edit/${item.id}`}>update</Link>
+              </button>
             </div>
           </div>
         ))}
+        <button>
+          <Link to='/write'>Create Diary</Link>
+        </button>
       </div>
     </div>
   );

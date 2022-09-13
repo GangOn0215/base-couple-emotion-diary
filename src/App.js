@@ -45,7 +45,7 @@ function App() {
     localStorage.setItem('diary', JSON.stringify(diaryList));
   }, [diaryList]);
 
-  const handleCreateList = (data) => {
+  const handleCreate = (data) => {
     console.log(data);
     diaryIdx.current += 1;
     data.id = diaryIdx.current;
@@ -61,9 +61,20 @@ function App() {
 
     let delList = diaryList.filter((item) => item.id !== dataId);
 
-    console.log(delList);
-
     setDiaryList(delList);
+  };
+
+  const handleUpdate = (dataIdx, updateData) => {
+    if (dataIdx <= 0) {
+      alert('조회한 정보를 찾을 수 없습니다.');
+      return;
+    }
+
+    let updateList = diaryList.map((item) =>
+      parseInt(item.id) === parseInt(dataIdx) ? { ...updateData, id: parseInt(dataIdx) } : item,
+    );
+
+    setDiaryList(updateList);
   };
 
   return (
@@ -75,9 +86,15 @@ function App() {
             <Route path='/' element={<About />} />
             <Route
               path='/list'
-              element={<DiaryList diaryList={diaryList} deleteList={handleDelete} />}
+              element={<DiaryList diaryList={diaryList} handleDelete={handleDelete} />}
             />
-            <Route path='/write' element={<DiaryEditor writeList={handleCreateList} />} />
+            <Route path='/write' element={<DiaryEditor handleCreate={handleCreate} />} />
+            <Route
+              path='/edit/:dataIdx'
+              element={
+                <DiaryEditor isEdit={true} diaryList={diaryList} handleUpdate={handleUpdate} />
+              }
+            />
           </Routes>
         </article>
         <footer></footer>
