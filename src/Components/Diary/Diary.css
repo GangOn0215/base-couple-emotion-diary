@@ -1,0 +1,82 @@
+.diary {
+	display: flex;
+	justify-content: center;
+	width: 70%;
+	min-height: 70vh;
+	border-left: 1px solid #e7f6f2;
+	border-right: 1px solid #e7f6f2;
+}
+
+.diary .about section {
+	height: 100%;
+}
+/* list */
+.diary .list {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.diary .list .list-container .list-item {
+	margin-bottom: 10px;
+	padding: 5px;
+	/* padding-bottom: 0px; */
+	border: 1px solid #bcbcbc;
+	width: 400px;
+}
+.diary .list .list-container .list-item p {
+	display: flex;
+	border-bottom: 1px solid #ececec;
+	flex-wrap: wrap;
+}
+.diary .list .list-container .list-item p.regdate {
+	font-size: 0.8em;
+	color: #737373;
+}
+.diary .list .list-container p:last-child {
+	border-bottom: none;
+}
+.diary .list .list-container p {
+	margin: 0;
+}
+.diary .list .list-container p span {
+	width: 100px;
+}
+
+/* editor */
+.diary .editor {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+}
+.diary .editor input,
+.diary .editor textarea,
+.diary .editor select,
+.diary .editor button {
+	width: 300px;
+	margin-bottom: 10px;
+	box-sizing: border-box;
+	resize: none;
+	padding: 5px;
+	/* font-family: "PT Sans", "Hi Melody", sans-serif; */
+	font-family: "PT Sans", "Hi Melody", sans-serif;
+}
+.diary .editor input,
+.diary .editor textarea {
+	font-size: 1.1em;
+}
+.diary .editor button {
+	height: 3rem;
+}
+
+/* 반응형 */
+@media (max-width: 765px) {
+	.diary {
+		width: 100%;
+	}
+	.diary .list .list-container .list-item {
+		width: 250px;
+	}
+}

@@ -1,59 +1,48 @@
 import './App.css';
+import './Components/Diary/Diary.css';
+
 import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // component
 import Header from './Components/Header';
+import About from './Components/About';
 // diary
 import DiaryList from './Components/Diary/List';
 import DiaryEditor from './Components/Diary/Editor';
-
-const dummyList = [
-  {
-    id: 1,
-    author: 'coxe',
-    title: 'new diary 1',
-    content: 'hi 1',
-    emotion: 1,
-    regDate: new Date().getTime(),
-  },
-  {
-    id: 2,
-    author: 'monkey',
-    title: 'new diary 2',
-    content: 'hi 2',
-    emotion: 2,
-    regDate: new Date().getTime(),
-  },
-];
 
 function App() {
   const [diaryList, setDiaryList] = useState([]);
   const diaryIdx = useRef(0);
   // localStorage.setItem('diary', JSON.stringify(dummyList));
 
+  // 쵀초 한번
   useEffect(() => {
+    /**
+     * 1. localStorage에 있는 diary 를 조회하여 데이터를 가져옵니다.
+     *    if localStorage에 diary 자체가 없다면 null을 반환해줍니다.
+     *
+     */
     let initDiary = localStorage.getItem('diary');
-    if (initDiary == null || initDiary.length === 0) {
+
+    // 만약 initDiary 가 null 이거나 '' 빈 문자열 이라면
+    if (!initDiary) {
       return;
     }
 
     initDiary = JSON.parse(initDiary);
 
+    if (initDiary.length === 0) {
+      return;
+    }
+
     setDiaryList(initDiary);
 
-    if (initDiary != null) {
-      diaryIdx.current = initDiary[0]['id'];
-    }
+    diaryIdx.current = initDiary[0]['id'];
   }, []);
 
   useEffect(() => {
-    if (diaryList === []) {
-      return;
-    }
-    if (diaryList.length > 0) {
-      localStorage.setItem('diary', JSON.stringify(diaryList));
-    }
+    localStorage.setItem('diary', JSON.stringify(diaryList));
   }, [diaryList]);
 
   const handleCreateList = (data) => {
@@ -72,6 +61,8 @@ function App() {
 
     let delList = diaryList.filter((item) => item.id !== dataId);
 
+    console.log(delList);
+
     setDiaryList(delList);
   };
 
@@ -81,8 +72,9 @@ function App() {
         <Header />
         <article className='diary'>
           <Routes>
+            <Route path='/' element={<About />} />
             <Route
-              path='/'
+              path='/list'
               element={<DiaryList diaryList={diaryList} deleteList={handleDelete} />}
             />
             <Route path='/write' element={<DiaryEditor writeList={handleCreateList} />} />

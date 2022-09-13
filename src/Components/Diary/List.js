@@ -5,7 +5,7 @@ const List = ({ diaryList, deleteList }) => {
     deleteList(idx);
   };
   return (
-    <div className='home'>
+    <div className='list'>
       <h2>Diary List</h2>
       <div className='list-container'>
         {diaryList.map((item) => (
