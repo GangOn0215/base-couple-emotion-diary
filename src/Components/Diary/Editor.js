@@ -43,6 +43,8 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
       return;
     }
 
+    alert('성공적으로 데이터 추가 하였습니다.');
+
     handleCreate(state);
 
     // 데이터를 성공적으로 추가 했다면 초기화 시켜줍니다.
@@ -53,7 +55,7 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
       emotion: 1,
     });
 
-    navigate('/');
+    navigate('/list');
   };
 
   const handleUpdateSubmit = () => {
@@ -76,6 +78,8 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
     }
 
     handleUpdate(dataIdx, state);
+
+    alert('업데이트 하였습니다.');
 
     navigate(`/edit/${dataIdx}`);
   };
