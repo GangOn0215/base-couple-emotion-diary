@@ -25,23 +25,7 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
   };
 
   const handleCreateSubmit = () => {
-    if (state.author.length < 1) {
-      inputAuthor.current.focus();
-
-      return;
-    }
-
-    if (state.title.length < 1) {
-      inputTitle.current.focus();
-
-      return;
-    }
-
-    if (state.content.length < 1) {
-      textareaContent.current.focus();
-
-      return;
-    }
+    checkValidation();
 
     alert('성공적으로 데이터 추가 하였습니다.');
 
@@ -59,6 +43,16 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
   };
 
   const handleUpdateSubmit = () => {
+    checkValidation();
+
+    handleUpdate(dataIdx, state);
+
+    alert('업데이트 하였습니다.');
+
+    navigate(`/edit/${dataIdx}`);
+  };
+
+  const checkValidation = () => {
     if (state.author.length < 1) {
       inputAuthor.current.focus();
 
@@ -76,13 +70,7 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
 
       return;
     }
-
-    handleUpdate(dataIdx, state);
-
-    alert('업데이트 하였습니다.');
-
-    navigate(`/edit/${dataIdx}`);
-  };
+  }
 
   useEffect(() => {
     if (isEdit) {
