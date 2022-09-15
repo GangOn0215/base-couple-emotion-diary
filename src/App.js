@@ -10,13 +10,13 @@ import About from './Components/About';
 // diary
 import DiaryList from './Components/Diary/List';
 import DiaryEditor from './Components/Diary/Editor';
+import DiaryDetail from './Components/Diary/Detail';
 
 function App() {
   const [diaryList, setDiaryList] = useState([]);
   const diaryIdx = useRef(0);
-  // localStorage.setItem('diary', JSON.stringify(dummyList));
 
-  // 쵀초 한번
+  // 최초 한번
   useEffect(() => {
     /**
      * 1. localStorage에 있는 diary 를 조회하여 데이터를 가져옵니다.
@@ -70,6 +70,9 @@ function App() {
       return;
     }
 
+    updateData.updateAt = new Date().getTime();
+
+    debugger;
     let updateList = diaryList.map((item) =>
       parseInt(item.id) === parseInt(dataIdx) ? { ...updateData, id: parseInt(dataIdx) } : item,
     );
@@ -78,7 +81,7 @@ function App() {
   };
 
   return (
-    <BrowserRouter basename='/base-couple-emotion-diary/'>
+    <BrowserRouter basename='/base-couple-emotion-diary'>
       <div className='App'>
         <Header />
         <article className='diary'>
@@ -95,6 +98,7 @@ function App() {
                 <DiaryEditor isEdit={true} diaryList={diaryList} handleUpdate={handleUpdate} />
               }
             />
+            <Route path='/detail/:dataIdx' element={<DiaryDetail diaryList={diaryList} />} />
           </Routes>
         </article>
         <footer></footer>

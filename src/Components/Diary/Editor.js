@@ -37,6 +37,7 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
       title: '',
       content: '',
       emotion: 1,
+      updateAt: null,
     });
 
     navigate('/list');
@@ -70,7 +71,7 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
 
       return;
     }
-  }
+  };
 
   useEffect(() => {
     if (isEdit) {
@@ -78,11 +79,12 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
         let tempList = diaryList.find((item) => item.id === parseInt(dataIdx));
 
         setState({
-          author: tempList.author,
           title: tempList.title,
           content: tempList.content,
           emotion: tempList.emotion,
+          author: tempList.author,
           createAt: tempList.createAt,
+          updateAt: tempList.updateAt,
         });
       }
     }

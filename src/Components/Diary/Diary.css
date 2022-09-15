@@ -24,22 +24,33 @@
 	border: 1px solid #bcbcbc;
 	width: 400px;
 }
-.diary .list .list-container .list-item p {
+
+.diary .list .list-container .list-item a,
+.diary .list .list-container .list-item p,
+.diary .detail .info p {
 	display: flex;
 	border-bottom: 1px solid #ececec;
 	flex-wrap: wrap;
 }
-.diary .list .list-container .list-item p.regdate {
+
+.diary .list .list-container .list-item p:last-child,
+.diary .detail .info p:last-child {
+	border-bottom: none;
+}
+.diary .list .list-container .list-item p.regdate,
+.diary .detail .info p.date {
 	font-size: 0.8em;
 	color: #737373;
 }
 .diary .list .list-container p:last-child {
 	border-bottom: none;
 }
-.diary .list .list-container p {
+.diary .list .list-container p,
+.diary .detail .info p {
 	margin: 0;
 }
-.diary .list .list-container p span {
+.diary .list .list-container p span,
+.diary .detail .info p span {
 	width: 100px;
 }
 .diary .list .list-container .handleButton {
@@ -73,6 +84,19 @@
 	height: 3rem;
 }
 
+.diary .detail {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+.diary .detail .info {
+	display: flex;
+	flex-direction: column;
+	min-width: 15rem;
+	border: 1px solid black;
+	padding: 5px;
+	margin-bottom: 10px;
+}
 /* 반응형 */
 @media (max-width: 765px) {
 	.diary {
