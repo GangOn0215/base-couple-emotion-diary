@@ -52,6 +52,7 @@
 .diary .list .list-container p span,
 .diary .detail .info p span {
 	width: 100px;
+	font-weight: bold;
 }
 .diary .list .list-container .handleButton {
 	margin-top: 5px;
@@ -88,6 +89,7 @@
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
+	width: 25rem;
 }
 .diary .detail .info {
 	display: flex;

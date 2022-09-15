@@ -21,7 +21,6 @@ function App() {
     /**
      * 1. localStorage에 있는 diary 를 조회하여 데이터를 가져옵니다.
      *    if localStorage에 diary 자체가 없다면 null을 반환해줍니다.
-     *
      */
     let initDiary = localStorage.getItem('diary');
 
