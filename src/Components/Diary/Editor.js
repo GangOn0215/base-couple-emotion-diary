@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 
 const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
   const { dataIdx } = useParams();
@@ -90,6 +90,12 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
     }
   }, []);
 
+  const buttonClick = useRef();
+
+  const onHandleClick = () => {
+    buttonClick.current.children[0].click();
+  };
+
   return (
     <div className='editor'>
       <h2>Today Diary</h2>
@@ -125,6 +131,9 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
         <option value={5}>5</option>
       </select>
       <button onClick={isEdit ? handleUpdateSubmit : handleCreateSubmit}>Save Diary</button>
+      <button ref={buttonClick} onClick={onHandleClick} className='link-button'>
+        <Link to='/list'>Diary List</Link>
+      </button>
     </div>
   );
 };

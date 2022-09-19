@@ -30,7 +30,7 @@ const Detail = ({ diaryList }) => {
           <span>Content</span> {detailData.content}
         </p>
       </div>
-      <button ref={buttonClick} onClick={onHandleClick}>
+      <button ref={buttonClick} onClick={onHandleClick} className='link-button'>
         <Link to={`/list`}>List</Link>
       </button>
     </div>

@@ -40,7 +40,7 @@ const List = ({ diaryList, handleUpdate, handleDelete }) => {
             </div>
           </div>
         ))}
-        <button ref={buttonClick} onClick={onHandleClick} className='link-create'>
+        <button ref={buttonClick} onClick={onHandleClick} className='link-button create'>
           <Link to='/write'>Create Diary</Link>
         </button>
       </div>

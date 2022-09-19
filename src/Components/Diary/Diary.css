@@ -29,7 +29,7 @@
 	box-sizing: border-box;
 }
 
-.diary .list .list-container .list-item a,
+/* .diary .list .list-container .list-item a, */
 .diary .list .list-container .list-item p,
 .diary .detail .info p {
 	display: flex;
@@ -61,9 +61,16 @@
 .diary .list .list-container .handleButton {
 	margin-top: 5px;
 }
+.diary .list .list-container .handleButton button:first-child {
+	margin-left: 0px;
+}
+.diary .list .list-container .handleButton button {
+	margin: 0px 3px;
+}
 
 .diary .editor button,
-.diary .list .list-container .link-create {
+.diary .list .list-container .link-button,
+.diary .detail .link-button {
 	width: 100%;
 	height: 2rem;
 }
@@ -118,5 +125,15 @@
 	.diary .detail {
 		width: 15rem;
 		overflow-wrap: anywhere;
+	}
+
+	.diary .list .list-container .handleButton button {
+		width: 100%;
+		margin: 0px 2px;
+	}
+	.diary .list .list-container .handleButton {
+		display: flex;
+		justify-content: space-evenly;
+		margin-top: 5px;
 	}
 }
