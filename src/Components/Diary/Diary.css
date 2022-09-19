@@ -107,4 +107,8 @@
 	.diary .list .list-container .list-item {
 		width: 250px;
 	}
+	.diary .detail {
+		width: 15rem;
+		overflow-wrap: anywhere;
+	}
 }

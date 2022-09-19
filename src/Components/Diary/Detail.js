@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
 const Detail = ({ diaryList }) => {
   const { dataIdx } = useParams();
 
   const detailData = diaryList.find((item) => item.id === parseInt(dataIdx));
+  const buttonClick = useRef();
 
-  console.log(detailData);
+  const onHandleClick = () => {
+    console.log(buttonClick.current.children[0].click());
+  };
 
   return (
     <div className='detail'>
@@ -27,7 +30,7 @@ const Detail = ({ diaryList }) => {
           <span>Content</span> {detailData.content}
         </p>
       </div>
-      <button>
+      <button ref={buttonClick} onClick={onHandleClick}>
         <Link to={`/list`}>List</Link>
       </button>
     </div>
