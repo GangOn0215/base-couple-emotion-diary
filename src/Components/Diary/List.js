@@ -6,6 +6,12 @@ const List = ({ diaryList, handleUpdate, handleDelete }) => {
     handleDelete(idx);
   };
 
+  const buttonClick = useRef();
+
+  const onHandleClick = () => {
+    buttonClick.current.children[0].click();
+  };
+
   return (
     <div className='list'>
       <h2>Diary List</h2>
@@ -34,7 +40,7 @@ const List = ({ diaryList, handleUpdate, handleDelete }) => {
             </div>
           </div>
         ))}
-        <button>
+        <button ref={buttonClick} onClick={onHandleClick} className='link-create'>
           <Link to='/write'>Create Diary</Link>
         </button>
       </div>

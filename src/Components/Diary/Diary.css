@@ -17,12 +17,16 @@
 	justify-content: center;
 	align-items: center;
 }
+.diary .list .list-container {
+	margin: 10px 0;
+}
 .diary .list .list-container .list-item {
 	margin-bottom: 10px;
 	padding: 5px;
 	/* padding-bottom: 0px; */
 	border: 1px solid #bcbcbc;
 	width: 400px;
+	box-sizing: border-box;
 }
 
 .diary .list .list-container .list-item a,
@@ -51,12 +55,19 @@
 }
 .diary .list .list-container p span,
 .diary .detail .info p span {
-	width: 100px;
+	width: 60px;
 	font-weight: bold;
 }
 .diary .list .list-container .handleButton {
 	margin-top: 5px;
 }
+
+.diary .editor button,
+.diary .list .list-container .link-create {
+	width: 100%;
+	height: 2rem;
+}
+
 /* editor */
 .diary .editor {
 	display: flex;
@@ -81,9 +92,6 @@
 .diary .editor textarea {
 	font-size: 1.1em;
 }
-.diary .editor button {
-	height: 3rem;
-}
 
 .diary .detail {
 	display: flex;
@@ -91,6 +99,7 @@
 	flex-direction: column;
 	width: 25rem;
 }
+
 .diary .detail .info {
 	display: flex;
 	flex-direction: column;
@@ -98,15 +107,14 @@
 	border: 1px solid black;
 	padding: 5px;
 	margin-bottom: 10px;
+	box-sizing: border-box;
 }
 /* 반응형 */
 @media (max-width: 765px) {
 	.diary {
 		width: 100%;
 	}
-	.diary .list .list-container .list-item {
-		width: 250px;
-	}
+	.diary .list .list-container .list-item,
 	.diary .detail {
 		width: 15rem;
 		overflow-wrap: anywhere;

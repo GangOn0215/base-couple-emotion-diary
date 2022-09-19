@@ -8,7 +8,7 @@ const Detail = ({ diaryList }) => {
   const buttonClick = useRef();
 
   const onHandleClick = () => {
-    console.log(buttonClick.current.children[0].click());
+    buttonClick.current.children[0].click();
   };
 
   return (
