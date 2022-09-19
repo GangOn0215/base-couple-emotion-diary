@@ -20,14 +20,14 @@ const Detail = ({ diaryList }) => {
         <p>
           <span>Author</span> {detailData.author}
         </p>
+        <p>
+          <span>Content</span> {detailData.content}
+        </p>
         <p className='date'>
           <span>Emotion</span> {detailData.emotion}
         </p>
         <p className='date'>
           <span>CreateAt</span> {new Date(detailData.createAt).toLocaleDateString()}
-        </p>
-        <p>
-          <span>Content</span> {detailData.content}
         </p>
       </div>
       <button ref={buttonClick} onClick={onHandleClick} className='link-button'>
