@@ -1,0 +1,21 @@
+{
+  "name": "base-couple-emotion-diary",
+  "version": "1.0.0",
+  "description": "여자친구가 카카오톡으로 커플 다이어리 오픈채팅방을 만들어주었습니다.\r 하지만 카톡은 애초에 메신저이기 때문에 관리하기도 어렵고 찾기도 힘들었습니다.",
+  "main": "index.js",
+  "scripts": {
+    "heroku-prebuild": "cd client && npm ci && npm run build && mv build ../server",
+    "start": "cd server && npm ci && node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GangOn0215/base-couple-emotion-diary.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GangOn0215/base-couple-emotion-diary/issues"
+  },
+  "homepage": "https://github.com/GangOn0215/base-couple-emotion-diary#readme"
+}
