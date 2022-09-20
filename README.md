@@ -1,6 +1,7 @@
 ## 💕 [Present :: Couple Diary](https://couple-diary-app.herokuapp.com/)
-## 💕 [Past :: Couple Diary](https://gangon0215.github.io/base-couple-emotion-diary/)
+ `2022-09-05` ~ `2022-09-16`
 
+## 💕 [Past :: Couple Diary](https://gangon0215.github.io/base-couple-emotion-diary/)
 
 여자친구가 카카오톡으로 커플 다이어리 오픈채팅방을 만들어주었습니다.
 하지만 카톡은 애초에 메신저이기 때문에 관리하기도 어렵고 찾기도 힘들었습니다.
