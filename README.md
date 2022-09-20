@@ -1,4 +1,7 @@
-## 💕 [Couple Diary](https://gangon0215.github.io/base-couple-emotion-diary/)
+## 💕 [Present :: Couple Diary](https://couple-diary-app.herokuapp.com/)
+ `2022-09-05` ~ `2022-09-16`
+
+## 💕 [Past :: Couple Diary](https://gangon0215.github.io/base-couple-emotion-diary/)
 
 여자친구가 카카오톡으로 커플 다이어리 오픈채팅방을 만들어주었습니다.
 하지만 카톡은 애초에 메신저이기 때문에 관리하기도 어렵고 찾기도 힘들었습니다.
@@ -58,3 +61,8 @@ emotion diary 를 따라하며 커플 다이어리의 기반을 다지고 있습
 
 - 2022/09/20
   - 전체적으로 button 디자인 수정, 반응형 수정
+  - _server : express
+  - _client : react
+  - heroku 배포 완료
+  - github 와 연동하여 git push 할때마다 heroku 에서 자동으로 배포를 해줍니다 (배포 자동화)
+  
