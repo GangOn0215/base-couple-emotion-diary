@@ -58,3 +58,8 @@ emotion diary 를 따라하며 커플 다이어리의 기반을 다지고 있습
 
 - 2022/09/20
   - 전체적으로 button 디자인 수정, 반응형 수정
+  - _server : express
+  - _client : react
+  - heroku 배포 완료
+  - github 와 연동하여 git push 할때마다 heroku 에서 자동으로 배포를 해줍니다 (배포 자동화)
+  
