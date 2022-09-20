@@ -80,7 +80,7 @@ function App() {
   };
 
   return (
-    <BrowserRouter basename='/base-couple-emotion-diary'>
+    <BrowserRouter>
       <div className='App'>
         <Header />
         <article className='diary'>

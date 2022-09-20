@@ -29,6 +29,9 @@ const Detail = ({ diaryList }) => {
         <p className='date'>
           <span>CreateAt</span> {new Date(detailData.createAt).toLocaleDateString()}
         </p>
+        <p className='date'>
+          <span>CreateAt</span> {new Date(detailData.updateAt).toLocaleDateString()}
+        </p>
       </div>
       <button ref={buttonClick} onClick={onHandleClick} className='link-button'>
         <Link to={`/list`}>List</Link>
