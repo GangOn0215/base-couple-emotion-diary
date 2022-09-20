@@ -30,7 +30,7 @@ const Detail = ({ diaryList }) => {
           <span>CreateAt</span> {new Date(detailData.createAt).toLocaleDateString()}
         </p>
         <p className='date'>
-          <span>CreateAt</span> {new Date(detailData.updateAt).toLocaleDateString()}
+          <span>UpdateAt</span> {new Date(detailData.updateAt).toLocaleDateString()}
         </p>
       </div>
       <button ref={buttonClick} onClick={onHandleClick} className='link-button'>

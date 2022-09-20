@@ -6,6 +6,9 @@
   "scripts": {
     "heroku-prebuild": "cd client && npm ci && npm run build && mv build ../server",
     "start": "cd server && npm ci && node app.js",
+    "client": "cd client && npm run start",
+    "server": "cd server && nodemon server",
+    "localStart": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/GangOn0215/base-couple-emotion-diary/issues"
   },
-  "homepage": "https://github.com/GangOn0215/base-couple-emotion-diary#readme"
+  "homepage": "https://github.com/GangOn0215/base-couple-emotion-diary#readme",
+  "dependencies": {
+    "concurrently": "^7.4.0"
+  }
 }
