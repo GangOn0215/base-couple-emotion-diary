@@ -4,6 +4,8 @@ import './Components/Diary/Diary.css';
 import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+import axios from 'axios';
+
 // component
 import Header from './Components/Header';
 import About from './Components/About';
@@ -15,9 +17,19 @@ import DiaryDetail from './Components/Diary/Detail';
 function App() {
   const [diaryList, setDiaryList] = useState([]);
   const diaryIdx = useRef(0);
-
+  const port = process.env.PORT || 3000;
   // 최초 한번
   useEffect(() => {
+    /*
+    fetch("http://localhost:3000/todos/list")
+      .then(res => res.json())
+      .then((result) => {
+        console.log(result);
+      });
+    */
+    axios.get(`http://localhost:${port}/todos/list`)
+      .then(res => console.log(res.data));
+
     /**
      * 1. localStorage에 있는 diary 를 조회하여 데이터를 가져옵니다.
      *    if localStorage에 diary 자체가 없다면 null을 반환해줍니다.
