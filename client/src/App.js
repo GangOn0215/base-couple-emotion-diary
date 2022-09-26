@@ -6,13 +6,16 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import axios from 'axios';
 
-// component
+// Component
 import Header from './Components/Header';
 import About from './Components/About';
-// diary
+// Diary
 import DiaryList from './Components/Diary/List';
 import DiaryEditor from './Components/Diary/Editor';
 import DiaryDetail from './Components/Diary/Detail';
+// Account
+import Login from './Components/Account/Login';
+import Signup from './Components/Account/Signup';
 
 function App() {
   const [diaryList, setDiaryList] = useState([]);
@@ -27,8 +30,7 @@ function App() {
         console.log(result);
       });
     */
-    axios.get(`http://localhost:${port}/todos/list`)
-      .then(res => console.log(res.data));
+    axios.get(`http://localhost:${port}/todos/list`).then((res) => console.log(res.data));
 
     /**
      * 1. localStorage에 있는 diary 를 조회하여 데이터를 가져옵니다.
@@ -110,6 +112,8 @@ function App() {
               }
             />
             <Route path='/detail/:dataIdx' element={<DiaryDetail diaryList={diaryList} />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/signup' element={<Signup />} />
           </Routes>
         </article>
         <footer></footer>

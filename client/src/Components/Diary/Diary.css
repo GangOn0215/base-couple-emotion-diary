@@ -9,6 +9,8 @@
 
 .diary .about section {
 	height: 100%;
+	display: flex;
+	align-items: center;
 }
 /* list */
 .diary .list {
