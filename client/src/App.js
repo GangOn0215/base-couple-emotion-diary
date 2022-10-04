@@ -20,12 +20,15 @@ import Signup from './Components/Account/Signup';
 function App() {
   const [diaryList, setDiaryList] = useState([]);
   const diaryIdx = useRef(0);
-  // const port = process.env.PORT || 3001;
-  const origin = window.location.origin;
+  let getTodoUrl = window.location.origin;
+
+  if(process.env.NODE_ENV === "development") {
+    getTodoUrl = 'http://localhost:3001';
+  }
 
   // 최초 한번
   useEffect(() => {
-    axios.get(`${origin}/todos/list`).then((res) => console.log(res.data));
+    axios.get(`${getTodoUrl}/todos/list`).then((res) => console.log(res.data));
 
     /**
      * 1. localStorage에 있는 diary 를 조회하여 데이터를 가져옵니다.
