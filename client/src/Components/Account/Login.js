@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -8,6 +10,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './account.css';
 
 const Login = () => {
+  let getTodoUrl = window.location.origin;
+
+  if (process.env.NODE_ENV === 'development') {
+    getTodoUrl = 'http://localhost:3001';
+  }
+
   const [loginID, setLoginID] = useState('');
   const [loginPW, setLoginPW] = useState('');
   const refInputID = useRef();
@@ -21,7 +29,7 @@ const Login = () => {
     setLoginPW(e.target.value);
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (loginID.length <= 0) {
       refInputID.current.focus();
       return;
@@ -31,11 +39,20 @@ const Login = () => {
       return;
     }
 
-    if (loginID === 'admin' && loginPW === '1234') {
-      alert(`Welcome ${loginID}`);
-    } else {
-      alert('ID or PW does not match');
-    }
+    const result = await axios.post(`${getTodoUrl}/account/login`, {
+      id: loginID,
+      pw: loginPW,
+    });
+
+    console.log(result);
+
+    // if (loginID === 'admin' && loginPW === '1234') {
+    //   alert(`Welcome ${loginID}`);
+
+    //   axios.get(`${getTodoUrl}/account/temp`).then((res) => console.log(res.data));
+    // } else {
+    //   alert('ID or PW does not match');
+    // }
   };
 
   return (
