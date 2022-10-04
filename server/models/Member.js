@@ -1,10 +1,10 @@
-const private = require('./private.json');
 const bcrypt = require("bcryptjs");
 
 // 1. mongoose 모듈 가져오기
 const mongoose = require('mongoose');
 
 if(process.env.NODE_ENV === 'develop') {
+  const private = require('./private.json');
   mongoose.connect(`mongodb+srv://${private.id}:${private.pw}@cluster0.oiy1b.mongodb.net/couple_diary?retryWrites=true&w=majority`);
 } else {
   mongoose.connect(process.env.MONGODB_URI);
