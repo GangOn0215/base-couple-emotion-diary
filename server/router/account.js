@@ -20,7 +20,7 @@ router.post('/login', async (req, res) => {
 
   if(!data) {
     res.json({
-      status: false,
+      success: false,
       data: { },
       error: "ID not found.",
     });
