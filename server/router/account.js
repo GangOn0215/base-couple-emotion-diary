@@ -19,6 +19,14 @@ router.post('/login', async (req, res) => {
   console.log(req.body);
 
   const data = await Member.findOne({ id: req.body.id });
+
+  if(!data) {
+    res.json({
+      success: false,
+      data: { },
+      error: "아이디가 없습니다.",
+    });
+  }
   const result = await bcrypt.compare(req.body.pw, data.pw);
 
   if (result) {
