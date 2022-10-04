@@ -44,6 +44,14 @@ const Login = () => {
       pw: loginPW,
     });
 
+    if(result.status === 200) {
+      if(result.data.success) {
+        const resData = result.data.data.resData;
+        alert(`Success Login, Welcome ${resData.id}`);
+      } else {
+        alert(`Fail Login, Error: ${result.data.error }`);
+      }
+    }
     console.log(result);
 
     // if (loginID === 'admin' && loginPW === '1234') {

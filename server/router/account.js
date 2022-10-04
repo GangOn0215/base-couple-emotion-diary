@@ -16,35 +16,39 @@ router.get('/temp', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-  console.log(req.body);
-
   const data = await Member.findOne({ id: req.body.id });
 
   if(!data) {
     res.json({
-      success: false,
+      status: false,
       data: { },
-      error: "아이디가 없습니다.",
+      error: "ID not found.",
     });
+
+    return;
   }
+
   const result = await bcrypt.compare(req.body.pw, data.pw);
 
-  if (result) {
-    const resData = await Member.findOne({ id: req.body.id }).select('-pw');
-    // const resData = await Member.findById(req.body.id).select('-pw');
-
-    res.json({
-      success: true,
-      data: {
-        resData
-      },
-    });
-  } else {
+  if(!result) {
     res.json({
       success: false,
       data: { },
+      error: 'The password is different.'
     });
+
+    return;
   }
+
+  const resData = await Member.findOne({ id: req.body.id }).select('-pw');
+
+  res.json({
+    status: true,
+    data: {
+      resData
+    },
+  });
+
 });
 
 module.exports = router;
