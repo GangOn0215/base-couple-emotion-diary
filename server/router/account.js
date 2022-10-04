@@ -43,7 +43,7 @@ router.post('/login', async (req, res) => {
   const resData = await Member.findOne({ id: req.body.id }).select('-pw');
 
   res.json({
-    status: true,
+    success: true,
     data: {
       resData
     },
