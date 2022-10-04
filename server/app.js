@@ -10,7 +10,6 @@ app.use(express.json());
 app.use(cors());
 
 // router
-<<<<<<< HEAD
 app.use('/', indexRouter);
 
 // 모든 경로 처리 - 리액트 에서 라우터 페이징
@@ -21,7 +20,6 @@ app.get('*', function (req, res) {
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/build/index.html');
 });
-=======
 const routeTodos = require('./router/todos');
 const routeAccount = require('./router/account');
 
