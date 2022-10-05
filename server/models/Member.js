@@ -4,8 +4,9 @@ const bcrypt = require("bcryptjs");
 const mongoose = require('mongoose');
 
 if(process.env.NODE_ENV === 'develop') {
-  const private = require('./private.json');
-  mongoose.connect(`mongodb+srv://${private.id}:${private.pw}@cluster0.oiy1b.mongodb.net/couple_diary?retryWrites=true&w=majority`);
+  const private = require('../private.json');
+  const mongoJSON = private.mongodb;
+  mongoose.connect(`mongodb+srv://${mongoJSON.id}:${mongoJSON.pw}@cluster0.oiy1b.mongodb.net/couple_diary?retryWrites=true&w=majority`);
 } else {
   mongoose.connect(process.env.MONGODB_URI);
 }
@@ -19,7 +20,7 @@ db.on('error', function(){
 
 // 5. 연결 성공
 db.once('open', function() {
-  console.log('Connected!');
+  console.log('Connected! MongoDB');
 });
 
 // 만약 없다면 새로 생성해줌

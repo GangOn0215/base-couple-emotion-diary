@@ -3,6 +3,7 @@ import './Components/Diary/Diary.css';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { CookiesProvider } from 'react-cookie';
 
 import axios from 'axios';
 
@@ -82,8 +83,7 @@ function App() {
     }
 
     updateData.updateAt = new Date().getTime();
-
-    debugger;
+    
     let updateList = diaryList.map((item) =>
       parseInt(item.id) === parseInt(dataIdx) ? { ...updateData, id: parseInt(dataIdx) } : item,
     );
@@ -92,6 +92,7 @@ function App() {
   };
 
   return (
+  <CookiesProvider>
     <BrowserRouter>
       <div className='App'>
         <Header />
@@ -117,6 +118,7 @@ function App() {
         <footer></footer>
       </div>
     </BrowserRouter>
+    </CookiesProvider>
   );
 }
 

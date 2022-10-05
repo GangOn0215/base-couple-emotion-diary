@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 
 // awesome icon
@@ -10,11 +11,32 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './account.css';
 
 const Login = () => {
+  const [cookies, setCookie, removeCookie] = useCookies(['x_auth']);
+  const [isAuth, setIsAuth] = useState(false);
+  
   let getTodoUrl = window.location.origin;
 
   if (process.env.NODE_ENV === 'development') {
     getTodoUrl = 'http://localhost:3001';
   }
+
+  useEffect(() => {
+    // 로그인 유저인지 확인
+    async function fetchCheckUser() {
+      const config = {headers: {authorization: cookies.x_auth}};
+      const result = await axios.post(`${getTodoUrl}/account/checkLogin`, {}, config);
+
+      if(result.status === 200) {
+        if(result.data.isAuth) {
+          setIsAuth(true);
+        } else {
+          setIsAuth(false);
+        }
+      }
+    }
+
+    fetchCheckUser();
+  }, [isAuth]);
 
   const [loginID, setLoginID] = useState('');
   const [loginPW, setLoginPW] = useState('');
@@ -28,6 +50,13 @@ const Login = () => {
   const onChangePW = (e) => {
     setLoginPW(e.target.value);
   };
+
+  const handleCheckJWT = async () => {
+    const config = {headers: {authorization: cookies.x_auth}};
+    const result = await axios.post(`${getTodoUrl}/account/checkLogin`, {}, config);
+
+    console.log(result);
+  }
 
   const handleLogin = async () => {
     if (loginID.length <= 0) {
@@ -46,50 +75,59 @@ const Login = () => {
 
     if(result.status === 200) {
       if(result.data.success) {
-        const resData = result.data.data.resData;
+        const resData = result.data.data;
         alert(`Success Login, Welcome ${resData.id}`);
+
+        setCookie('x_auth', result.data.token);
+        setIsAuth(true);
       } else {
         alert(`Fail Login, Error: ${result.data.error }`);
+        setIsAuth(false);
       }
     }
+
     console.log(result);
-
-    // if (loginID === 'admin' && loginPW === '1234') {
-    //   alert(`Welcome ${loginID}`);
-
-    //   axios.get(`${getTodoUrl}/account/temp`).then((res) => console.log(res.data));
-    // } else {
-    //   alert('ID or PW does not match');
-    // }
   };
 
+  const handleLogout = () => {
+    removeCookie('x_auth');
+
+    setIsAuth(false);
+  }
+
   return (
-    <div className='form-container'>
-      <div className='form-box'>
-        <input
-          ref={refInputID}
-          type='text'
-          value={loginID}
-          onChange={onChangeID}
-          placeholder='ID'
-        />
-        <input
-          ref={refInputPW}
-          type='password'
-          value={loginPW}
-          onChange={onChangePW}
-          placeholder='Password'
-        />
-        <button onClick={handleLogin}>Login</button>
-        <div className='icon-sign-up'>
-          <Link to='/signup'>
-            <FontAwesomeIcon icon={faUser} />
-            <label>Sign Up</label>
-          </Link>
+    <>
+    {
+      isAuth ? <div className='login-account'><button onClick={handleLogout}>Logout</button></div> :
+      <div className='form-container'>
+        <div className='form-box'>
+          <input
+            ref={refInputID}
+            type='text'
+            value={loginID}
+            onChange={onChangeID}
+            placeholder='ID'
+          />
+          <input
+            ref={refInputPW}
+            type='password'
+            value={loginPW}
+            onChange={onChangePW}
+            placeholder='Password'
+          />
+          <button onClick={handleLogin}>Login</button>
+          <button onClick={handleCheckJWT}>checkJWT</button>
+          <div className='icon-sign-up'>
+            <Link to='/signup'>
+              <FontAwesomeIcon icon={faUser} />
+              <label>Sign Up</label>
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    }
+    </>
+  )
 };
 
 export default Login;

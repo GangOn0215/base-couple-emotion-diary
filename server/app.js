@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -10,6 +11,7 @@ const routeAccount = require('./router/account');
 
 app.use(express.static('build'));
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 
 // router

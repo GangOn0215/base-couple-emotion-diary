@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/GangOn0215/base-couple-emotion-diary#readme",
   "dependencies": {
-    "concurrently": "^7.4.0"
+    "concurrently": "^7.4.0",
+    "cookie-parser": "^1.4.6"
   }
 }
