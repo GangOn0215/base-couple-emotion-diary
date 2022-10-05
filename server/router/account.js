@@ -64,11 +64,10 @@ router.post('/login', async (req, res) => {
     }
   }
 
-  console.log(privateJSON.jwt);
   // jwt 넣어주기
   jwt.sign(
     payload,
-    privateJSON.jwt.key,
+    JWT_KEY,
     { expiresIn: "1h" },
     (err, token) => {
       if(err) throw err;
@@ -83,6 +82,7 @@ router.post('/login', async (req, res) => {
 router.post('/checkLogin', authChecker, async(req, res) => {
   const getUser = await row_id(req.user.id);
   console.log(getUser);
+
   if(getUser) {
     res.send({
       isAuth: true,
@@ -93,7 +93,6 @@ router.post('/checkLogin', authChecker, async(req, res) => {
 
 router.post('/register', async (req, res) => {
   const reqBody = req.body;
-
 });
 
 
