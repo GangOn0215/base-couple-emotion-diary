@@ -21,7 +21,6 @@ if(process.env.NODE_ENV === 'develop') {
 const Member = require('../models/Member');
 const row_id = async (id) => {
   return await Member.findById(id).select('-pw');
-
 }
 
 router.get('/', (req, res) => {
@@ -81,8 +80,6 @@ router.post('/login', async (req, res) => {
 //authChecker: jwt 체크하는 middleware
 router.post('/checkLogin', authChecker, async(req, res) => {
   const getUser = await row_id(req.user.id);
-  console.log(getUser);
-
   if(getUser) {
     res.send({
       isAuth: true,
@@ -90,6 +87,18 @@ router.post('/checkLogin', authChecker, async(req, res) => {
     })
   }
 });
+
+router.post('/row', authChecker, async(req, res) => {
+  const getUser = await row_id(req.user.id);
+  
+  if(getUser) {
+    res.send({
+      isAuth: true,
+      user: getUser
+    })
+  }
+});
+
 
 router.post('/register', async (req, res) => {
   const reqBody = req.body;

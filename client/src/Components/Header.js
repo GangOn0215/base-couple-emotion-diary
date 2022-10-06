@@ -1,7 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
-const Header = () => {
+const Header = ({handleAuth, isAuth}) => {
+  const [cookies, setCookie, removeCookie] = useCookies(['x_auth']);
+  const handleLogout = () => {
+    removeCookie('x_auth');
+
+    handleAuth(false);
+  }
   return (
     <header>
       <nav>
@@ -12,9 +19,10 @@ const Header = () => {
           <li>
             <Link to='/list'>Diary</Link>
           </li>
-          <li></li>
           <li>
-            <Link to='/login'>Login</Link>
+          </li>
+          <li>
+            {isAuth ? <Link to='/profile'>Profile</Link> : <Link to='/login'>Login</Link>}
           </li>
         </ul>
       </nav>

@@ -40,7 +40,17 @@ header nav ul li {
 	text-align: center;
 	padding: 10px;
 }
-header nav ul li a:hover {
+header nav ul li button {
+	border: none;
+	background: none;
+	font-size: 1.3rem;
+	font-family: "PT Sans", sans-serif;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+header nav ul li a:hover,
+header nav ul li button:hover {
 	color: #8d8d8d;
 }
 footer {

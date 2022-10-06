@@ -1,7 +1,7 @@
 import './App.css';
 import './Components/Diary/Diary.css';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 
@@ -17,9 +17,11 @@ import DiaryDetail from './Components/Diary/Detail';
 // Account
 import Login from './Components/Account/Login';
 import Signup from './Components/Account/Signup';
+import Profile from './Components/Account/Profile';
 
 function App() {
   const [diaryList, setDiaryList] = useState([]);
+  const [isAuth, setIsAuth] = useState(false);
   const diaryIdx = useRef(0);
   let getTodoUrl = window.location.origin;
 
@@ -91,11 +93,15 @@ function App() {
     setDiaryList(updateList);
   };
 
+  const handleAuth = (auth) => {
+    setIsAuth(auth);
+  }
+
   return (
   <CookiesProvider>
     <BrowserRouter>
       <div className='App'>
-        <Header />
+        <Header handleAuth={handleAuth} isAuth={isAuth}/>
         <article className='diary'>
           <Routes>
             <Route path='/' element={<About />} />
@@ -111,8 +117,9 @@ function App() {
               }
             />
             <Route path='/detail/:dataIdx' element={<DiaryDetail diaryList={diaryList} />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/signup' element={<Signup />} />
+            <Route path='/login' element={<Login handleAuth={handleAuth} isAuth={isAuth}/> } />
+            <Route path='/signup' element={<Signup handleAuth={handleAuth} isAuth={isAuth} /> } />
+            <Route path='/profile' element={<Profile handleAuth={handleAuth} isAuth={isAuth} />} />
           </Routes>
         </article>
         <footer></footer>

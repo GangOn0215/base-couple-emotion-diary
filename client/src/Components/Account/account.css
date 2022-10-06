@@ -70,3 +70,49 @@
 .icon-sign-up label {
 	cursor: pointer;
 }
+
+.profile {
+	display: flex;
+	align-items: center;
+
+}
+
+.profile ul {
+	border: 1px solid #dedede;
+	padding: 10px;
+	padding-bottom: 0px;
+	/* width: 500px; */
+}
+
+.profile ul li {
+	display: flex;
+	min-height: 30px;
+	align-items: center;
+	margin-bottom: 5px;
+}
+.profile ul li span {
+	width: 20%;
+	display: inline-block;
+	background-color: #f8f8f8;
+	padding: 5px;
+	margin-right: 10px;
+	text-align: center;
+}
+
+.profile ul li img {
+	width: 25%;
+}
+
+.profile .bono-img {
+	align-items: flex-end;
+}
+
+.btn-logout {
+	width: 100%;
+	font-size: 17px;
+	line-height: 46px;
+	box-sizing: border-box;
+	height: 48px;
+	border: none;
+	cursor: pointer;
+}

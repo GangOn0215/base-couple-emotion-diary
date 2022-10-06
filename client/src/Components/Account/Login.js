@@ -1,8 +1,10 @@
 import axios from 'axios';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
+
 
 // awesome icon
 import { faUser } from '@fortawesome/free-solid-svg-icons';
@@ -10,16 +12,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './account.css';
 
-const Login = () => {
+const Login = ({handleAuth, isAuth}) => {
+  const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(['x_auth']);
-  const [isAuth, setIsAuth] = useState(false);
-  
+
   let getTodoUrl = window.location.origin;
 
   if (process.env.NODE_ENV === 'development') {
     getTodoUrl = 'http://localhost:3001';
   }
 
+  /*
   useEffect(() => {
     // 로그인 유저인지 확인
     async function fetchCheckUser() {
@@ -28,15 +31,16 @@ const Login = () => {
 
       if(result.status === 200) {
         if(result.data.isAuth) {
-          setIsAuth(true);
+          // setIsAuth(true);
         } else {
-          setIsAuth(false);
+          // setIsAuth(false);
         }
       }
     }
 
     fetchCheckUser();
   }, [isAuth]);
+  */
 
   const [loginID, setLoginID] = useState('');
   const [loginPW, setLoginPW] = useState('');
@@ -54,7 +58,7 @@ const Login = () => {
   const handleCheckJWT = async () => {
     const config = {headers: {authorization: cookies.x_auth}};
     const result = await axios.post(`${getTodoUrl}/account/checkLogin`, {}, config);
-
+    
     console.log(result);
   }
 
@@ -79,10 +83,12 @@ const Login = () => {
         alert(`Success Login, Welcome ${resData.id}`);
 
         setCookie('x_auth', result.data.token);
-        setIsAuth(true);
+        handleAuth(true);
+
+        navigate('/profile');
       } else {
         alert(`Fail Login, Error: ${result.data.error }`);
-        setIsAuth(false);
+        handleAuth(false);
       }
     }
 
@@ -92,7 +98,7 @@ const Login = () => {
   const handleLogout = () => {
     removeCookie('x_auth');
 
-    setIsAuth(false);
+    handleAuth(false);
   }
 
   return (
