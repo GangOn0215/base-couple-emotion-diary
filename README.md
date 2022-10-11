@@ -69,3 +69,23 @@ emotion diary 를 따라하며 커플 다이어리의 기반을 다지고 있습
 - 2022/09/22
   - _client : install axios, server에 있는 todos 데이터 가져오는것 테스트
   - _server : `app.use(cors);` 라고 작성하여 에러 발생 `app.use(cors());` 으로 수정
+
+- 2022/09/27
+  - _client: Login, SignUp 디자인 추가, react 폼, fortawesome 을 이용하여 아이콘 적용
+
+- 2022/09/28
+  - _client: axios로 server 통신 테스트 > heroku 서버에서도 작동 되는지 확인 
+  - dotenv로 process.env 활용 ( heroku 에선 무조건 process.env.PORT를 사용해야합니다.)
+
+- 2022/10/04
+  - _client: process.env.NODE_ENV를 이용하여 development일때 localhost 로 url 적용시키는 코드 추가
+  - _client: axios 로 login 비동기로 server에서 받아오는것 테스트
+  - _server: connect mongoDB, mongoDB Schema 생성, router로 라우팅 폴더 생성, 모듈화 작업
+  - _server: mongoDB 정보를 local 에선 private.json에 넣고 heroku 서버에는 config 에서 따로 설정해두는곳이 있어서 그곳에 적용, .gitignore 에 .private.json 으로 git state에 안올라오게 적용 
+
+- 2022/10/05
+  - _client: axios 로 로그인 결과 status 200일때 데이터 받아와서 console로 찍어주는 코드 추가
+  - _server: 데이터 뿌려주는 부분 로직 조금 수정
+  
+
+  
