@@ -5,10 +5,15 @@ import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+//reducer
+import { fetchLogin } from '../../redux/auth/fetch/action';
+
 // awesome icon
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+//css
 import './account.css';
 
 const Login = ({ handleAuth, isAuth }) => {
@@ -119,4 +124,15 @@ const Login = ({ handleAuth, isAuth }) => {
   );
 };
 
-export default Login;
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    auth: state.auth,
+  };
+};
+
+const mapDispatchToProps = {
+  fetchLogin,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

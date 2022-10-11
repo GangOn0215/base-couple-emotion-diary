@@ -1,7 +1,7 @@
 import './App.css';
 import './Components/Diary/Diary.css';
 
-import React, { useState, useEffect, useRef, createContext } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 
@@ -17,7 +17,9 @@ import Login from './Components/Account/Login';
 import Signup from './Components/Account/Signup';
 import Profile from './Components/Account/Profile';
 
-export const MyContext = createContext(1);
+//Redux
+import store from './redux/store';
+import { Provider } from 'react-redux';
 
 function App() {
   const [diaryList, setDiaryList] = useState([]);
@@ -30,8 +32,6 @@ function App() {
     if (process.env.NODE_ENV === 'development') {
       setCorsURL('http://localhost:3001');
     }
-
-    // axios.get(`${corsURL}/todos/list`).then((res) => console.log(res.data));
   }, []);
 
   useEffect(() => {
@@ -77,7 +77,7 @@ function App() {
   };
 
   return (
-    <MyContext.Provider value={{isAuth, handleAuth}}>
+    <Provider store={store}>
       <CookiesProvider>
         <BrowserRouter>
           <div className='App'>
@@ -113,7 +113,7 @@ function App() {
           </div>
         </BrowserRouter>
       </CookiesProvider>
-    </MyContext.Provider>
+    </Provider>
   );
 }
 
