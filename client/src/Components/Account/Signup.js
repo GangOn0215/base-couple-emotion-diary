@@ -2,12 +2,12 @@ import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 // awesome icon
-import { faUser, faGears } from '@fortawesome/free-solid-svg-icons';
+import { faGears } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './account.css';
 
-const Login = () => {
+const Signup = () => {
   const memberRef = useRef([]);
 
   const [memberState, setMemberState] = useState({
@@ -20,11 +20,11 @@ const Login = () => {
   const onChangeMemberState = (e) => {
     setMemberState({
       ...memberState,
-      [e.target.name]: [e.target.value],
+      [e.target.name]: e.target.value,
     });
   };
 
-  const onHandleSignUp = () => {
+  const onHandleSignUp = async () => {
     let validation = true;
 
     for (let i = 0; i < memberRef.current.length; i++) {
@@ -89,4 +89,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

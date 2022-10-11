@@ -102,6 +102,8 @@ router.post('/row', authChecker, async(req, res) => {
 
 router.post('/register', async (req, res) => {
   const reqBody = req.body;
+
+  console.log(req.body);
 });
 
 

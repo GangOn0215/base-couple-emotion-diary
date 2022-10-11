@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
 
-const Header = ({handleAuth, isAuth}) => {
-  const [cookies, setCookie, removeCookie] = useCookies(['x_auth']);
-  const handleLogout = () => {
-    removeCookie('x_auth');
+import { MyContext } from '../App';
 
-    handleAuth(false);
-  }
+const Header = () => {
+  const { isAuth } = useContext(MyContext);
+  console.log(isAuth);
+
   return (
     <header>
       <nav>
@@ -19,11 +17,8 @@ const Header = ({handleAuth, isAuth}) => {
           <li>
             <Link to='/list'>Diary</Link>
           </li>
-          <li>
-          </li>
-          <li>
-            {isAuth ? <Link to='/profile'>Profile</Link> : <Link to='/login'>Login</Link>}
-          </li>
+          <li></li>
+          <li>{isAuth ? <Link to='/profile'>Profile</Link> : <Link to='/login'>Login</Link>}</li>
         </ul>
       </nav>
     </header>

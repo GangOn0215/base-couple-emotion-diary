@@ -7,6 +7,12 @@
 	border-right: 1px solid #e7f6f2;
 }
 
+.diary .about {
+	/* background-image: url("/assets/image/bono_back_friend.jpg"); */
+  background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+}
 .diary .about section {
 	height: 100%;
 	display: flex;

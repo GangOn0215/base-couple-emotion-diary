@@ -1,11 +1,9 @@
 import './App.css';
 import './Components/Diary/Diary.css';
 
-import React, { useState, useEffect, useRef, } from 'react';
+import React, { useState, useEffect, useRef, createContext } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
-
-import axios from 'axios';
 
 // Component
 import Header from './Components/Header';
@@ -19,40 +17,21 @@ import Login from './Components/Account/Login';
 import Signup from './Components/Account/Signup';
 import Profile from './Components/Account/Profile';
 
+export const MyContext = createContext(1);
+
 function App() {
   const [diaryList, setDiaryList] = useState([]);
   const [isAuth, setIsAuth] = useState(false);
+  const [corsURL, setCorsURL] = useState(window.location.origin);
   const diaryIdx = useRef(0);
-  let getTodoUrl = window.location.origin;
-
-  if(process.env.NODE_ENV === "development") {
-    getTodoUrl = 'http://localhost:3001';
-  }
 
   // 최초 한번
   useEffect(() => {
-    axios.get(`${getTodoUrl}/todos/list`).then((res) => console.log(res.data));
-
-    /**
-     * 1. localStorage에 있는 diary 를 조회하여 데이터를 가져옵니다.
-     *    if localStorage에 diary 자체가 없다면 null을 반환해줍니다.
-     */
-    let initDiary = localStorage.getItem('diary');
-
-    // 만약 initDiary 가 null 이거나 '' 빈 문자열 이라면
-    if (!initDiary) {
-      return;
+    if (process.env.NODE_ENV === 'development') {
+      setCorsURL('http://localhost:3001');
     }
 
-    initDiary = JSON.parse(initDiary);
-
-    if (initDiary.length === 0) {
-      return;
-    }
-
-    setDiaryList(initDiary);
-
-    diaryIdx.current = initDiary[0]['id'];
+    // axios.get(`${corsURL}/todos/list`).then((res) => console.log(res.data));
   }, []);
 
   useEffect(() => {
@@ -85,7 +64,7 @@ function App() {
     }
 
     updateData.updateAt = new Date().getTime();
-    
+
     let updateList = diaryList.map((item) =>
       parseInt(item.id) === parseInt(dataIdx) ? { ...updateData, id: parseInt(dataIdx) } : item,
     );
@@ -95,37 +74,46 @@ function App() {
 
   const handleAuth = (auth) => {
     setIsAuth(auth);
-  }
+  };
 
   return (
-  <CookiesProvider>
-    <BrowserRouter>
-      <div className='App'>
-        <Header handleAuth={handleAuth} isAuth={isAuth}/>
-        <article className='diary'>
-          <Routes>
-            <Route path='/' element={<About />} />
-            <Route
-              path='/list'
-              element={<DiaryList diaryList={diaryList} handleDelete={handleDelete} />}
-            />
-            <Route path='/write' element={<DiaryEditor handleCreate={handleCreate} />} />
-            <Route
-              path='/edit/:dataIdx'
-              element={
-                <DiaryEditor isEdit={true} diaryList={diaryList} handleUpdate={handleUpdate} />
-              }
-            />
-            <Route path='/detail/:dataIdx' element={<DiaryDetail diaryList={diaryList} />} />
-            <Route path='/login' element={<Login handleAuth={handleAuth} isAuth={isAuth}/> } />
-            <Route path='/signup' element={<Signup handleAuth={handleAuth} isAuth={isAuth} /> } />
-            <Route path='/profile' element={<Profile handleAuth={handleAuth} isAuth={isAuth} />} />
-          </Routes>
-        </article>
-        <footer></footer>
-      </div>
-    </BrowserRouter>
-    </CookiesProvider>
+    <MyContext.Provider value={{isAuth, handleAuth}}>
+      <CookiesProvider>
+        <BrowserRouter>
+          <div className='App'>
+            {/* <Header handleAuth={handleAuth} isAuth={isAuth} /> */}
+            <Header />
+            <article className='diary'>
+              <Routes>
+                <Route path='/' element={<About />} />
+                <Route
+                  path='/list'
+                  element={<DiaryList diaryList={diaryList} handleDelete={handleDelete} />}
+                />
+                <Route path='/write' element={<DiaryEditor handleCreate={handleCreate} />} />
+                <Route
+                  path='/edit/:dataIdx'
+                  element={
+                    <DiaryEditor isEdit={true} diaryList={diaryList} handleUpdate={handleUpdate} />
+                  }
+                />
+                <Route path='/detail/:dataIdx' element={<DiaryDetail diaryList={diaryList} />} />
+                <Route path='/login' element={<Login handleAuth={handleAuth} isAuth={isAuth} />} />
+                <Route
+                  path='/signup'
+                  element={<Signup handleAuth={handleAuth} isAuth={isAuth} />}
+                />
+                <Route
+                  path='/profile'
+                  element={<Profile handleAuth={handleAuth} isAuth={isAuth} />}
+                />
+              </Routes>
+            </article>
+            <footer></footer>
+          </div>
+        </BrowserRouter>
+      </CookiesProvider>
+    </MyContext.Provider>
   );
 }
 
