@@ -10,51 +10,29 @@ import { actionLogout } from '../../redux/auth/axios/action';
 
 const Profile = ({ axiosAuth, actionLogout }) => {
   const navigate = useNavigate();
-  const [cookies, removeCookie] = useCookies(['x_auth']);
-  useEffect(() => {
-    if (!axiosAuth.isAuth) {
-      navigate('/login');
-
-      return;
-    }
-  }, [axiosAuth, navigate]);
-
   const [member, setMember] = useState({
     id: '',
     email: '',
     phoneNumber: '',
     age: '',
   });
+  const [cookies, removeCookie] = useCookies(['x_auth']);
+  useEffect(() => {
+    if (!axiosAuth.isAuth) {
+      navigate('/login');
 
-  // useEffect(() => {
-  //   // 로그인 유저인지 확인
-  //   async function fetchCheckUser() {
-  //     const config = { headers: { authorization: cookies.x_auth } };
-  //     const result = await axios.post(`${getTodoUrl}/account/row`, {}, config);
-
-  //     if (result.status === 200) {
-  //       setIsLoading(false);
-  //       if (result.data.isAuth) {
-  //         const user = result.data.user;
-
-  //         console.log(result.data.user.id);
-
-  //         setMember({
-  //           id: user.id,
-  //           email: user.email,
-  //           phoneNumber: user.phoneNumber,
-  //           age: user.age,
-  //         });
-  //       } else {
-  //         removeCookie('x_auth');
-
-  //         navigate('/login');
-  //       }
-  //     }
-  //   }
-
-  //   fetchCheckUser();
-  // }, []);
+      return;
+    } else {
+      const memberInfo = axiosAuth.memberInfo.data.data;
+      console.log(memberInfo);
+      setMember({
+        id: memberInfo.id,
+        email: memberInfo.email,
+        phoneNumber: memberInfo.phoneNumber,
+        age: memberInfo.age,
+      });
+    }
+  }, [axiosAuth, navigate]);
 
   const handleLogout = () => {
     removeCookie('x_auth');
