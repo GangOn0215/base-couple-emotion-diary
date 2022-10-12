@@ -9,7 +9,7 @@ const authChecker = require('../middleware/auth');
 let privateJSON = null;
 let JWT_KEY = null;
 
-if(process.env.NODE_ENV === 'develop') {
+if (process.env.NODE_ENV === 'develop') {
   // private json data
   privateJSON = require('../private.json');
   JWT_KEY = privateJSON.jwt.key;
@@ -21,21 +21,25 @@ if(process.env.NODE_ENV === 'develop') {
 const Member = require('../models/Member');
 const row_id = async (id) => {
   return await Member.findById(id).select('-pw');
-}
+};
 
 router.get('/', (req, res) => {
   console.log('account');
 });
 
 router.post('/login', async (req, res) => {
+  // loading animation을 위한 delay
+  const wait = (timeToDelay) => new Promise((resolve) => setTimeout(resolve, timeToDelay));
+  await wait(2000);
+
   const data = await Member.findOne({ id: req.body.id });
 
   // User not found.
-  if(!data) {
+  if (!data) {
     res.json({
-      success: false,
-      data: { },
-      error: "ID not found.",
+      status: 'login_fail',
+      data: {},
+      error: 'ID not found.',
     });
 
     return;
@@ -44,11 +48,11 @@ router.post('/login', async (req, res) => {
   const result = await bcrypt.compare(req.body.pw, data.pw);
 
   // password is not match
-  if(!result) {
+  if (!result) {
     res.json({
-      success: false,
-      data: { },
-      error: 'The password is different.'
+      status: 'login_fail',
+      data: {},
+      error: 'The password is different.',
     });
 
     return;
@@ -60,51 +64,43 @@ router.post('/login', async (req, res) => {
   const payload = {
     user: {
       id: resData._id,
-    }
-  }
+    },
+  };
 
   // jwt 넣어주기
-  jwt.sign(
-    payload,
-    JWT_KEY,
-    { expiresIn: "1h" },
-    (err, token) => {
-      if(err) throw err;
-      res.cookie('x_auth', token, { httpOnly : false });
-      res.send({ success: true, token: token, data: resData });
-    }
-  )
-
+  jwt.sign(payload, JWT_KEY, { expiresIn: '1h' }, (err, token) => {
+    if (err) throw err;
+    res.cookie('x_auth', token, { httpOnly: false });
+    res.send({ status: 'login_success', token: token, data: resData });
+  });
 });
 
 //authChecker: jwt 체크하는 middleware
-router.post('/checkLogin', authChecker, async(req, res) => {
+router.post('/checkLogin', authChecker, async (req, res) => {
   const getUser = await row_id(req.user.id);
-  if(getUser) {
+  if (getUser) {
     res.send({
       isAuth: true,
-      user: getUser
-    })
+      user: getUser,
+    });
   }
 });
 
-router.post('/row', authChecker, async(req, res) => {
+router.post('/row', authChecker, async (req, res) => {
   const getUser = await row_id(req.user.id);
-  
-  if(getUser) {
+
+  if (getUser) {
     res.send({
       isAuth: true,
-      user: getUser
-    })
+      user: getUser,
+    });
   }
 });
-
 
 router.post('/register', async (req, res) => {
   const reqBody = req.body;
 
   console.log(req.body);
 });
-
 
 module.exports = router;

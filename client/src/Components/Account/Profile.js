@@ -3,66 +3,65 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
-const Profile = ({handleAuth, isAuth}) => {
-  const navigate = useNavigate();
+import { connect } from 'react-redux';
 
-  const [cookies, setCookie, removeCookie] = useCookies(['x_auth']);
-  const [isLoading, setIsLoading] = useState(true);
+//reducer
+import { actionLogout } from '../../redux/auth/axios/action';
+
+const Profile = ({ axiosAuth, actionLogout }) => {
+  const navigate = useNavigate();
+  const [cookies, removeCookie] = useCookies(['x_auth']);
+  useEffect(() => {
+    if (!axiosAuth.isAuth) {
+      navigate('/login');
+
+      return;
+    }
+  }, [axiosAuth, navigate]);
+
   const [member, setMember] = useState({
     id: '',
     email: '',
     phoneNumber: '',
     age: '',
-  })
+  });
 
-  let getTodoUrl = window.location.origin;
+  // useEffect(() => {
+  //   // 로그인 유저인지 확인
+  //   async function fetchCheckUser() {
+  //     const config = { headers: { authorization: cookies.x_auth } };
+  //     const result = await axios.post(`${getTodoUrl}/account/row`, {}, config);
 
-  if (process.env.NODE_ENV === 'development') {
-    getTodoUrl = 'http://localhost:3001';
-  }
+  //     if (result.status === 200) {
+  //       setIsLoading(false);
+  //       if (result.data.isAuth) {
+  //         const user = result.data.user;
 
-  useEffect(() => {
-    // 로그인 유저인지 확인
-    async function fetchCheckUser() {
-      const config = { headers: { authorization: cookies.x_auth } };
-      const result = await axios.post(`${getTodoUrl}/account/row`, {}, config);
+  //         console.log(result.data.user.id);
 
-      if (result.status === 200) {
-        setIsLoading(false);
-        if(result.data.isAuth) {
-          handleAuth(true);
-          const user = result.data.user;
-          
-          console.log(result.data.user.id);
+  //         setMember({
+  //           id: user.id,
+  //           email: user.email,
+  //           phoneNumber: user.phoneNumber,
+  //           age: user.age,
+  //         });
+  //       } else {
+  //         removeCookie('x_auth');
 
-          setMember({
-            id: user.id,
-            email: user.email,
-            phoneNumber: user.phoneNumber,
-            age: user.age
-          });
+  //         navigate('/login');
+  //       }
+  //     }
+  //   }
 
-        } else {
-          handleAuth(false);
-          removeCookie('x_auth');
-
-          navigate('/login');
-        }
-      }
-    }
-
-    fetchCheckUser();
-  }, [isAuth]);
+  //   fetchCheckUser();
+  // }, []);
 
   const handleLogout = () => {
     removeCookie('x_auth');
 
-    handleAuth(false);
-  }
-  
-  if(isLoading) {
-    return (<></>)
-  }
+    actionLogout();
+    // handleAuth(false);
+  };
 
   return (
     <article className='profile'>
@@ -83,11 +82,23 @@ const Profile = ({handleAuth, isAuth}) => {
           <span>Age</span> {member.age}
         </li>
         <li>
-          <button className="btn-logout" onClick={handleLogout}>Logout</button>
+          <button className='btn-logout' onClick={handleLogout}>
+            Logout
+          </button>
         </li>
       </ul>
     </article>
   );
 };
 
-export default Profile;
+const mapStateToProps = (state) => {
+  return {
+    axiosAuth: state.axiosAuth,
+  };
+};
+
+const mapDispatchToProps = {
+  actionLogout,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

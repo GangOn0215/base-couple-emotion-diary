@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
-
 import { connect } from 'react-redux';
+
 //reducer
-import { fetchLogin } from '../../redux/auth/fetch/action';
+import { axiosLogin } from '../../redux/auth/axios/action';
 
 // awesome icon
 import { faUser } from '@fortawesome/free-solid-svg-icons';
@@ -16,9 +16,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //css
 import './account.css';
 
-const Login = ({ handleAuth, isAuth }) => {
+const Login = ({ axiosLogin, axiosAuth }) => {
   const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies(['x_auth']);
+  const [cookies, setCookie] = useCookies(['x_auth']);
 
   let getTodoUrl = window.location.origin;
 
@@ -57,68 +57,54 @@ const Login = ({ handleAuth, isAuth }) => {
       return;
     }
 
-    const result = await axios.post(`${getTodoUrl}/account/login`, {
-      id: loginID,
-      pw: loginPW,
-    });
+    axiosLogin(loginID, loginPW);
+  };
 
-    if (result.status === 200) {
-      if (result.data.success) {
-        const resData = result.data.data;
-        alert(`Success Login, Welcome ${resData.id}`);
-
-        setCookie('x_auth', result.data.token);
-        handleAuth(true);
-
-        navigate('/profile');
-      } else {
-        alert(`Fail Login, Error: ${result.data.error}`);
-
-        removeCookie('x_auth');
-        handleAuth(false);
-      }
+  useEffect(() => {
+    if (axiosAuth.isAuth) {
+      setCookie('x_auth', axiosAuth.memberInfo.data.token);
+      navigate('/profile');
     }
-  };
-
-  const handleLogout = () => {
-    removeCookie('x_auth');
-
-    handleAuth(false);
-  };
+  }, [axiosAuth, navigate, setCookie]);
 
   return (
     <>
-      {isAuth ? (
-        <div className='login-account'>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
+      {axiosAuth.isLoading ? (
+        <>
+          <div className='main-site'>
+            <div className='main-header pad-top wrapper' id='mainHeader'></div>
+            <div className='loader loader-7'></div>
+          </div>{' '}
+        </>
       ) : (
-        <div className='form-container'>
-          <div className='form-box'>
-            <input
-              ref={refInputID}
-              type='text'
-              value={loginID}
-              onChange={onChangeID}
-              placeholder='ID'
-            />
-            <input
-              ref={refInputPW}
-              type='password'
-              value={loginPW}
-              onChange={onChangePW}
-              placeholder='Password'
-            />
-            <button onClick={handleLogin}>Login</button>
-            <button onClick={handleCheckJWT}>checkJWT</button>
-            <div className='icon-sign-up'>
-              <Link to='/signup'>
-                <FontAwesomeIcon icon={faUser} />
-                <label>Sign Up</label>
-              </Link>
+        <>
+          <div className='form-container'>
+            <div className='form-box'>
+              <input
+                ref={refInputID}
+                type='text'
+                value={loginID}
+                onChange={onChangeID}
+                placeholder='ID'
+              />
+              <input
+                ref={refInputPW}
+                type='password'
+                value={loginPW}
+                onChange={onChangePW}
+                placeholder='Password'
+              />
+              <button onClick={handleLogin}>Login</button>
+              <button onClick={handleCheckJWT}>checkJWT</button>
+              <div className='icon-sign-up'>
+                <Link to='/signup'>
+                  <FontAwesomeIcon icon={faUser} />
+                  <label>Sign Up</label>
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </>
   );
@@ -128,11 +114,12 @@ const mapStateToProps = (state) => {
   console.log(state);
   return {
     auth: state.auth,
+    axiosAuth: state.axiosAuth,
   };
 };
 
 const mapDispatchToProps = {
-  fetchLogin,
+  axiosLogin,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const Header = () => {
+const Header = ({ axiosAuth }) => {
   return (
     <header>
       <nav>
@@ -12,12 +13,19 @@ const Header = () => {
             <Link to='/list'>Diary</Link>
           </li>
           <li></li>
-          <li></li>
-          {/* <li>{isAuth ? <Link to='/profile'>Profile</Link> : <Link to='/login'>Login</Link>}</li> */}
+          <li>
+            {axiosAuth.isAuth ? <Link to='/profile'>Profile</Link> : <Link to='/login'>Login</Link>}
+          </li>
         </ul>
       </nav>
     </header>
   );
 };
 
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    axiosAuth: state.axiosAuth,
+  };
+};
+
+export default connect(mapStateToProps)(Header);
