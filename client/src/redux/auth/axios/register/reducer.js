@@ -1,4 +1,9 @@
-import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, AXIOS_NETWORK_ERROR } from './types';
+import {
+  REGISTER_REQUEST,
+  REGISTER_SUCCESS,
+  REGISTER_FAILURE,
+  REGISTER_NETWORK_ERROR,
+} from './types';
 
 const initialState = {
   isLoading: false,
@@ -6,6 +11,7 @@ const initialState = {
 };
 
 const axiosRegisterReducer = (currentState = initialState, action) => {
+  console.log(action);
   let newState = {};
   switch (action.type) {
     case REGISTER_REQUEST:
@@ -35,7 +41,7 @@ const axiosRegisterReducer = (currentState = initialState, action) => {
         // error: action.payload,
       };
       break;
-    case AXIOS_NETWORK_ERROR:
+    case REGISTER_NETWORK_ERROR:
       newState = {
         ...currentState,
         error: 'NETWORK_ERROR',

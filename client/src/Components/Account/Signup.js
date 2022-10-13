@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -12,7 +13,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './account.css';
 
-const Signup = ({ axiosRegisterAction, isAuthLoginAction, axiosRegister }) => {
+const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister }) => {
+  const navigate = useNavigate();
   const memberRef = useRef([]);
   const [cookies, setCookie, removeCookie] = useCookies(['x_auth']);
 
@@ -59,8 +61,9 @@ const Signup = ({ axiosRegisterAction, isAuthLoginAction, axiosRegister }) => {
 
   useEffect(() => {
     switch (axiosRegister.status) {
-      case 'LOGIN_SUCCESS':
-        console.log(axiosRegister);
+      case 'REGISTER_SUCCESS':
+        alert(`${axiosRegister.memberId}님 반갑습니다.`);
+
         setCookie('x_auth', axiosRegister.token);
         isAuthLoginAction();
         break;
@@ -68,6 +71,12 @@ const Signup = ({ axiosRegisterAction, isAuthLoginAction, axiosRegister }) => {
         break;
     }
   }, [axiosRegister, setCookie, removeCookie]);
+
+  useEffect(() => {
+    if (auth.isAuth) {
+      navigate('/profile');
+    }
+  }, [auth, navigate]);
 
   return (
     <>
