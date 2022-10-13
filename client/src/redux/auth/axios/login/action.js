@@ -1,30 +1,30 @@
 import axios from 'axios';
 
-import { REQUEST, SUCCESS, FAILURE, NETWORK_ERROR, LOGOUT } from '../types';
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGIN_NETWORK_ERROR, LOGOUT } from './types';
 
 const axiosLoginRequest = () => {
   return {
-    type: REQUEST,
+    type: LOGIN_REQUEST,
   };
 };
 
 const axiosLoginSuccess = (data) => {
   return {
-    type: SUCCESS,
+    type: LOGIN_SUCCESS,
     payload: data,
   };
 };
 
 const axiosLoginFailure = (data) => {
   return {
-    type: FAILURE,
+    type: LOGIN_FAILURE,
     payload: data.data.error,
   };
 };
 
 const axiosNetworkError = (error) => {
   return {
-    type: NETWORK_ERROR,
+    type: LOGIN_NETWORK_ERROR,
     payload: error,
   };
 };

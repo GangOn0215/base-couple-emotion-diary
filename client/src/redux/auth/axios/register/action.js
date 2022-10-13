@@ -1,35 +1,40 @@
 import axios from 'axios';
 
-import { REQUEST, SUCCESS, FAILURE, NETWORK_ERROR, LOGOUT } from '../types';
+import {
+  REGISTER_REQUEST,
+  REGISTER_SUCCESS,
+  REGISTER_FAILURE,
+  REGISTER_NETWORK_ERROR,
+} from './types';
 
-const axiosLoginRequest = () => {
+const axiosRegisterRequest = () => {
   return {
-    type: REQUEST,
+    type: REGISTER_REQUEST,
   };
 };
 
-const axiosLoginSuccess = (data) => {
+const axiosRegisterSuccess = (data) => {
   return {
-    type: SUCCESS,
+    type: REGISTER_SUCCESS,
     payload: data,
   };
 };
 
-const axiosLoginFailure = (data) => {
+const axiosRegisterFailure = (data) => {
   return {
-    type: FAILURE,
+    type: REGISTER_FAILURE,
     payload: data.data.error,
   };
 };
 
 const axiosNetworkError = (error) => {
   return {
-    type: NETWORK_ERROR,
+    type: REGISTER_NETWORK_ERROR,
     payload: error,
   };
 };
 
-export const axiosLoginAction = (loginID, loginPW) => {
+export const axiosRegisterAction = (id, pw, email, phoneNumber, age) => {
   let getActionUrl = window.location.origin;
 
   if (process.env.NODE_ENV === 'development') {
@@ -37,30 +42,27 @@ export const axiosLoginAction = (loginID, loginPW) => {
   }
 
   return (dispatch) => {
-    dispatch(axiosLoginRequest());
+    dispatch(axiosRegisterRequest());
     axios
       .post(`${getActionUrl}/account/register`, {
-        id: loginID,
-        pw: loginPW,
+        id,
+        pw,
+        email,
+        phoneNumber,
+        age,
       })
       .then((data) => {
         switch (data.data.status) {
-          case 'login_success':
-            dispatch(axiosLoginSuccess(data));
+          case 'register_success':
+            dispatch(axiosRegisterSuccess(data));
             break;
-          case 'login_fail':
-            dispatch(axiosLoginFailure(data));
+          case 'register_fail':
+            dispatch(axiosRegisterFailure(data));
             break;
           default:
             break;
         }
       })
       .catch((error) => dispatch(axiosNetworkError(error)));
-  };
-};
-
-export const actionLogout = () => {
-  return {
-    type: LOGOUT,
   };
 };

@@ -3,6 +3,8 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const saltRounds = 10; // salt 돌리는 횟수
+
 //middleware
 const authChecker = require('../middleware/auth');
 
@@ -98,8 +100,50 @@ router.post('/row', authChecker, async (req, res) => {
 
 router.post('/register', async (req, res) => {
   const reqBody = req.body;
+  console.log(reqBody);
 
-  console.log(req.body);
+  const checkOverlapData = await Member.findOne({ id: req.body.id });
+
+  // 이미 데이터가 존재함
+  if (checkOverlapData) {
+    res.json({
+      status: 'register_fail',
+      error: '아이디가 존재 합니다.',
+    });
+
+    return;
+  }
+
+  const hashPassword = bcrypt.hashSync(req.body.pw, saltRounds);
+
+  const newMember = new Member({
+    id: reqBody.id,
+    pw: hashPassword,
+    email: reqBody.email,
+    phoneNumber: reqBody.phoneNumber,
+    age: reqBody.age,
+  });
+
+  const result = await newMember.save();
+
+  const wait = (timeToDelay) => new Promise((resolve) => setTimeout(resolve, timeToDelay));
+  await wait(2000);
+
+  const pkId = result._id;
+
+  const payload = {
+    user: {
+      id: pkId,
+    },
+  };
+
+  // jwt 넣어주기
+  jwt.sign(payload, JWT_KEY, { expiresIn: '1h' }, (err, token) => {
+    if (err) throw err;
+
+    // res.send({ break: 'break' });
+    res.send({ status: 'register_success', token: token, memberId: reqBody.id });
+  });
 });
 
 module.exports = router;

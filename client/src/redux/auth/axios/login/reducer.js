@@ -1,21 +1,20 @@
-import { REQUEST, SUCCESS, FAILURE, NETWORK_ERROR, LOGOUT } from '../types';
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGIN_NETWORK_ERROR, LOGOUT } from './types';
 
 const initialState = {
   isLoading: false,
   status: 'LOGIN_FAIL',
 };
 
-const loginAxiosReducer = (currentState = initialState, action) => {
+const axiosLoginReducer = (currentState = initialState, action) => {
   let newState = {};
   switch (action.type) {
-    case REQUEST:
+    case LOGIN_REQUEST:
       newState = {
         ...currentState,
         isLoading: true,
       };
       break;
-    case SUCCESS:
-      console.log(action.payload.data.token);
+    case LOGIN_SUCCESS:
       newState = {
         ...currentState,
         isLoading: false,
@@ -24,7 +23,7 @@ const loginAxiosReducer = (currentState = initialState, action) => {
         // memberInfo: action.payload,
       };
       break;
-    case FAILURE:
+    case LOGIN_FAILURE:
       newState = {
         ...currentState,
         isLoading: false,
@@ -34,7 +33,7 @@ const loginAxiosReducer = (currentState = initialState, action) => {
         // error: action.payload,
       };
       break;
-    case NETWORK_ERROR:
+    case LOGIN_NETWORK_ERROR:
       newState = {
         ...currentState,
         error: 'NETWORK_ERROR',
@@ -58,4 +57,4 @@ const loginAxiosReducer = (currentState = initialState, action) => {
   return newState;
 };
 
-export default loginAxiosReducer;
+export default axiosLoginReducer;

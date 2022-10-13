@@ -1,40 +1,35 @@
-import {
-  AXIOS_LOGIN_REQUEST,
-  AXIOS_LOGIN_SUCCESS,
-  AXIOS_LOGIN_FAILURE,
-  AXIOS_NETWORK_ERROR,
-  LOGOUT,
-} from './types';
+import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, AXIOS_NETWORK_ERROR } from './types';
 
 const initialState = {
   isLoading: false,
-  status: 'LOGIN_FAIL',
+  status: 'REGISTER_FAIL',
 };
 
-const loginAxiosReducer = (currentState = initialState, action) => {
+const axiosRegisterReducer = (currentState = initialState, action) => {
   let newState = {};
   switch (action.type) {
-    case AXIOS_LOGIN_REQUEST:
+    case REGISTER_REQUEST:
       newState = {
         ...currentState,
         isLoading: true,
       };
       break;
-    case AXIOS_LOGIN_SUCCESS:
-      console.log(action.payload.data.token);
+    case REGISTER_SUCCESS:
+      console.log(action.payload);
       newState = {
         ...currentState,
         isLoading: false,
-        status: 'LOGIN_SUCCESS',
+        status: 'REGISTER_SUCCESS',
         token: action.payload.data.token,
+        memberId: action.payload.data.memberId,
         // memberInfo: action.payload,
       };
       break;
-    case AXIOS_LOGIN_FAILURE:
+    case REGISTER_FAILURE:
       newState = {
         ...currentState,
         isLoading: false,
-        status: 'LOGIN_FAIL',
+        status: 'REGISTER_FAIL',
         token: '',
 
         // error: action.payload,
@@ -48,14 +43,6 @@ const loginAxiosReducer = (currentState = initialState, action) => {
         token: '',
       };
       break;
-    case LOGOUT:
-      newState = {
-        ...currentState,
-        isLoading: false,
-        status: 'LOGIN_FAIL',
-        token: '',
-      };
-      break;
     default:
       newState = currentState;
       break;
@@ -64,4 +51,4 @@ const loginAxiosReducer = (currentState = initialState, action) => {
   return newState;
 };
 
-export default loginAxiosReducer;
+export default axiosRegisterReducer;
