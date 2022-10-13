@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import authReducer from './auth/reducer';
-import loginAxiosReducer from './auth/axios/reducer';
+import axiosLoginReducer from './auth/axios/login/reducer';
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  axiosAuth: loginAxiosReducer,
+  axiosLogin: axiosLoginReducer,
 });
 
 export default rootReducer;

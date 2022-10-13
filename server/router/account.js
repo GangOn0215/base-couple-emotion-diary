@@ -81,7 +81,6 @@ router.post('/checkLogin', authChecker, async (req, res) => {
   if (getUser) {
     res.send({
       isAuth: true,
-      user: getUser,
     });
   }
 });
@@ -92,7 +91,7 @@ router.post('/row', authChecker, async (req, res) => {
   if (getUser) {
     res.send({
       isAuth: true,
-      user: getUser,
+      member: getUser,
     });
   }
 });

@@ -7,7 +7,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 //reducer
-import { axiosLogin } from '../../redux/auth/axios/action';
+import { axiosLoginAction } from '../../redux/auth/axios/login/action';
+import { isAuthLoginAction, isAuthLogoutAction } from '../../redux/auth/action';
 
 // awesome icon
 import { faUser } from '@fortawesome/free-solid-svg-icons';
@@ -16,9 +17,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //css
 import './account.css';
 
-const Login = ({ axiosLogin, axiosAuth }) => {
+const Login = ({ auth, axiosLogin, axiosLoginAction, isAuthLoginAction }) => {
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(['x_auth']);
+  const [cookies, setCookie, removeCookie] = useCookies(['x_auth']);
 
   let getTodoUrl = window.location.origin;
 
@@ -57,19 +58,33 @@ const Login = ({ axiosLogin, axiosAuth }) => {
       return;
     }
 
-    axiosLogin(loginID, loginPW);
+    axiosLoginAction(loginID, loginPW);
   };
 
   useEffect(() => {
-    if (axiosAuth.isAuth) {
-      setCookie('x_auth', axiosAuth.memberInfo.data.token);
+    console.log(axiosLogin);
+    switch (axiosLogin.status) {
+      case 'LOGIN_SUCCESS':
+        setCookie('x_auth', axiosLogin.token);
+        isAuthLoginAction();
+        break;
+      case 'LOGIN_FAIL':
+        isAuthLogoutAction();
+        break;
+      default:
+        break;
+    }
+  }, [axiosLogin, setCookie, removeCookie]);
+
+  useEffect(() => {
+    if (auth.isAuth) {
       navigate('/profile');
     }
-  }, [axiosAuth, navigate, setCookie]);
+  }, [auth, navigate]);
 
   return (
     <>
-      {axiosAuth.isLoading ? (
+      {axiosLogin.isLoading ? (
         <>
           <div className='main-site'>
             <div className='main-header pad-top wrapper' id='mainHeader'></div>
@@ -111,15 +126,16 @@ const Login = ({ axiosLogin, axiosAuth }) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     auth: state.auth,
-    axiosAuth: state.axiosAuth,
+    axiosLogin: state.axiosLogin,
   };
 };
 
 const mapDispatchToProps = {
-  axiosLogin,
+  axiosLoginAction,
+  isAuthLoginAction,
+  isAuthLogoutAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

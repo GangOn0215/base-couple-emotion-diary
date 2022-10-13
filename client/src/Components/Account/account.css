@@ -80,7 +80,7 @@
 	border: 1px solid #dedede;
 	padding: 10px;
 	padding-bottom: 0px;
-	/* width: 500px; */
+	width: 15rem;
 }
 
 .profile ul li {
@@ -99,11 +99,12 @@
 }
 
 .profile ul li img {
-	width: 25%;
+	width: 30%;
+	border-radius: 50%;
 }
 
 .profile .bono-img {
-	align-items: flex-end;
+	justify-content: center;
 }
 
 .btn-logout {
@@ -234,4 +235,19 @@
 .main-site {
 	display: flex;
 	align-items: center;
+}
+
+.btn-logout,
+.profile .bono-img {
+	background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, purple);
+}
+
+.profile ul {
+	background-color: #333;
+}
+.profile ul li {
+	color: whitesmoke;
+}
+.profile ul li span {
+	color: #333;
 }

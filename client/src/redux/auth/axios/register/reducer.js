@@ -3,19 +3,15 @@ import {
   AXIOS_LOGIN_SUCCESS,
   AXIOS_LOGIN_FAILURE,
   AXIOS_NETWORK_ERROR,
-  AXIOS_LOGIN_CHECK_REQUEST,
-  AXIOS_LOGIN_CHECK_SUCCESS,
-  AXIOS_CHECK_FAILURE,
   LOGOUT,
 } from './types';
 
 const initialState = {
-  isAuth: false,
   isLoading: false,
-  memberInfo: {},
+  status: 'LOGIN_FAIL',
 };
 
-const loginAxiosReducer = (currentState, action) => {
+const loginAxiosReducer = (currentState = initialState, action) => {
   let newState = {};
   switch (action.type) {
     case AXIOS_LOGIN_REQUEST:
@@ -25,36 +21,43 @@ const loginAxiosReducer = (currentState, action) => {
       };
       break;
     case AXIOS_LOGIN_SUCCESS:
+      console.log(action.payload.data.token);
       newState = {
         ...currentState,
         isLoading: false,
-        isAuth: true,
-        memberInfo: action.payload,
+        status: 'LOGIN_SUCCESS',
+        token: action.payload.data.token,
+        // memberInfo: action.payload,
       };
       break;
     case AXIOS_LOGIN_FAILURE:
       newState = {
         ...currentState,
         isLoading: false,
-        isAuth: false,
-        error: action.payload,
+        status: 'LOGIN_FAIL',
+        token: '',
+
+        // error: action.payload,
       };
-      break;
-    case AXIOS_LOGIN_CHECK_REQUEST:
-      break;
-    case AXIOS_LOGIN_CHECK_SUCCESS:
-      break;
-    case AXIOS_CHECK_FAILURE:
       break;
     case AXIOS_NETWORK_ERROR:
       newState = {
         ...currentState,
         error: 'NETWORK_ERROR',
+        status: 'NETWORK_ERROR',
+        token: '',
       };
       break;
     case LOGOUT:
+      newState = {
+        ...currentState,
+        isLoading: false,
+        status: 'LOGIN_FAIL',
+        token: '',
+      };
+      break;
     default:
-      newState = initialState;
+      newState = currentState;
       break;
   }
 

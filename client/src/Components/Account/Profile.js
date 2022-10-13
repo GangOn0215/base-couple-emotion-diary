@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
@@ -6,38 +7,52 @@ import { useCookies } from 'react-cookie';
 import { connect } from 'react-redux';
 
 //reducer
-import { actionLogout } from '../../redux/auth/axios/action';
+import { actionLogout } from '../../redux/auth/axios/login/action';
+import { isAuthLogoutAction } from '../../redux/auth/action';
 
-const Profile = ({ axiosAuth, actionLogout }) => {
+const Profile = ({ auth, isAuthLogoutAction }) => {
   const navigate = useNavigate();
+  const [cookies, removeCookie] = useCookies(['x_auth']);
   const [member, setMember] = useState({
     id: '',
     email: '',
     phoneNumber: '',
     age: '',
   });
-  const [cookies, removeCookie] = useCookies(['x_auth']);
+
+  let getActionUrl = window.location.origin;
+  if (process.env.NODE_ENV === 'development') {
+    getActionUrl = 'http://localhost:3001';
+  }
+
   useEffect(() => {
-    if (!axiosAuth.isAuth) {
+    // 로그인 상태가 아니거나 cookie x_auth가 없다면
+    if (!auth.isAuth || !cookies.x_auth) {
       navigate('/login');
 
       return;
-    } else {
-      const memberInfo = axiosAuth.memberInfo.data.data;
-      console.log(memberInfo);
-      setMember({
-        id: memberInfo.id,
-        email: memberInfo.email,
-        phoneNumber: memberInfo.phoneNumber,
-        age: memberInfo.age,
-      });
     }
-  }, [axiosAuth, navigate]);
+
+    const config = { headers: { Authorization: cookies.x_auth } };
+    // checkLogin
+    axios.post(`${getActionUrl}/account/row`, {}, config).then((res) => {
+      if (res.data.isAuth) {
+        console.log(res.data);
+        const memberInfo = res.data.member;
+        setMember({
+          id: memberInfo.id,
+          email: memberInfo.email,
+          phoneNumber: memberInfo.phoneNumber,
+          age: memberInfo.age,
+        });
+      }
+    });
+  }, [auth, navigate, cookies, getActionUrl]);
 
   const handleLogout = () => {
     removeCookie('x_auth');
 
-    actionLogout();
+    isAuthLogoutAction();
     // handleAuth(false);
   };
 
@@ -45,7 +60,7 @@ const Profile = ({ axiosAuth, actionLogout }) => {
     <article className='profile'>
       <ul>
         <li className='bono-img'>
-          <span>Profile</span> <img src={'/assets/image/bonobono_profile.jpg'} alt='bono' />
+          <img src={'/assets/image/bonobono_profile.jpg'} alt='bono' />
         </li>
         <li>
           <span>ID</span> {member.id}
@@ -71,12 +86,13 @@ const Profile = ({ axiosAuth, actionLogout }) => {
 
 const mapStateToProps = (state) => {
   return {
-    axiosAuth: state.axiosAuth,
+    auth: state.auth,
   };
 };
 
 const mapDispatchToProps = {
   actionLogout,
+  isAuthLogoutAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
