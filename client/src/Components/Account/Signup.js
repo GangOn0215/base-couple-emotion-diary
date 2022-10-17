@@ -1,10 +1,9 @@
 import axios from 'axios';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { axiosRegisterAction } from '../../redux/auth/axios/register/action';
 import { isAuthLoginAction } from '../../redux/auth/action';

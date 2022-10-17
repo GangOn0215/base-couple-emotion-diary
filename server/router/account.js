@@ -21,8 +21,13 @@ if (process.env.NODE_ENV === 'develop') {
 
 // Model
 const Member = require('../models/Member');
+
 const row_id = async (id) => {
   return await Member.findById(id).select('-pw');
+};
+
+const row_email = async (email) => {
+  return await Member.findById(email).select('-pw');
 };
 
 router.get('/', (req, res) => {
@@ -85,6 +90,32 @@ router.post('/checkLogin', authChecker, async (req, res) => {
       isAuth: true,
     });
   }
+});
+
+/**
+ * type
+ *   id, email
+ *
+ */
+router.get('/overlap', async (req, res) => {
+  let type = null;
+
+  switch (req.query.type) {
+    case 'id':
+      const getUser = await row_id(req.user.id);
+      break;
+    case 'email':
+      break;
+    default:
+      break;
+  }
+  console.log(req.query.type);
+
+  res.send(req.query.type);
+});
+
+router.post('/checkOverlapEmail', async (req, res) => {
+  const getUser = await row_id(req.user.email);
 });
 
 router.post('/row', authChecker, async (req, res) => {
