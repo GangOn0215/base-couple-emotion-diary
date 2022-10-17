@@ -17,10 +17,6 @@ import Login from './Components/Account/Login';
 import Signup from './Components/Account/Signup';
 import Profile from './Components/Account/Profile';
 
-//Redux
-import store from './redux/store';
-import { Provider } from 'react-redux';
-
 function App() {
   const [diaryList, setDiaryList] = useState([]);
   const [isAuth, setIsAuth] = useState(false);
@@ -77,43 +73,38 @@ function App() {
   };
 
   return (
-    <Provider store={store}>
-      <CookiesProvider>
-        <BrowserRouter>
-          <div className='App'>
-            {/* <Header handleAuth={handleAuth} isAuth={isAuth} /> */}
-            <Header />
-            <article className='diary'>
-              <Routes>
-                <Route path='/' element={<About />} />
-                <Route
-                  path='/list'
-                  element={<DiaryList diaryList={diaryList} handleDelete={handleDelete} />}
-                />
-                <Route path='/write' element={<DiaryEditor handleCreate={handleCreate} />} />
-                <Route
-                  path='/edit/:dataIdx'
-                  element={
-                    <DiaryEditor isEdit={true} diaryList={diaryList} handleUpdate={handleUpdate} />
-                  }
-                />
-                <Route path='/detail/:dataIdx' element={<DiaryDetail diaryList={diaryList} />} />
-                <Route path='/login' element={<Login handleAuth={handleAuth} isAuth={isAuth} />} />
-                <Route
-                  path='/signup'
-                  element={<Signup handleAuth={handleAuth} isAuth={isAuth} />}
-                />
-                <Route
-                  path='/profile'
-                  element={<Profile handleAuth={handleAuth} isAuth={isAuth} />}
-                />
-              </Routes>
-            </article>
-            <footer></footer>
-          </div>
-        </BrowserRouter>
-      </CookiesProvider>
-    </Provider>
+    <CookiesProvider>
+      <BrowserRouter>
+        <div className='App'>
+          {/* <Header handleAuth={handleAuth} isAuth={isAuth} /> */}
+          <Header />
+          <article className='diary'>
+            <Routes>
+              <Route path='/' element={<About />} />
+              <Route
+                path='/list'
+                element={<DiaryList diaryList={diaryList} handleDelete={handleDelete} />}
+              />
+              <Route path='/write' element={<DiaryEditor handleCreate={handleCreate} />} />
+              <Route
+                path='/edit/:dataIdx'
+                element={
+                  <DiaryEditor isEdit={true} diaryList={diaryList} handleUpdate={handleUpdate} />
+                }
+              />
+              <Route path='/detail/:dataIdx' element={<DiaryDetail diaryList={diaryList} />} />
+              <Route path='/login' element={<Login handleAuth={handleAuth} isAuth={isAuth} />} />
+              <Route path='/signup' element={<Signup handleAuth={handleAuth} isAuth={isAuth} />} />
+              <Route
+                path='/profile'
+                element={<Profile handleAuth={handleAuth} isAuth={isAuth} />}
+              />
+            </Routes>
+          </article>
+          <footer></footer>
+        </div>
+      </BrowserRouter>
+    </CookiesProvider>
   );
 }
 

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
@@ -21,6 +23,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
   const [memberState, setMemberState] = useState({
     id: '',
     pw: '',
+    pw2: '',
     email: '',
     phoneNumber: '',
     age: '30',
@@ -37,12 +40,31 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
     let validation = true;
 
     for (let i = 0; i < memberRef.current.length; i++) {
+      //required
       if (memberState[memberRef.current[i].name].length <= 0) {
         validation = false;
         memberRef.current[i].focus();
 
         break;
       }
+    }
+
+    // check overlap - member id, member email
+
+    // check regular - member id, email, pw, phone
+
+    // check password
+    if (memberState.pw !== memberState.pw2) {
+      alert('패스워드가 다릅니다. ');
+
+      setMemberState({
+        ...memberState,
+        pw: '',
+        pw2: '',
+      });
+
+      memberRef.current[1].focus();
+      validation = false;
     }
 
     //validation 통과
@@ -60,6 +82,12 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
   };
 
   useEffect(() => {
+    if (auth.isAuth) {
+      navigate('/profile');
+
+      return;
+    }
+
     switch (axiosRegister.status) {
       case 'REGISTER_SUCCESS':
         alert(`${axiosRegister.memberId}님 반갑습니다.`);
@@ -70,13 +98,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
       default:
         break;
     }
-  }, [axiosRegister, setCookie, removeCookie]);
-
-  useEffect(() => {
-    if (auth.isAuth) {
-      navigate('/profile');
-    }
-  }, [auth, navigate]);
+  }, [auth, navigate, axiosRegister, setCookie, removeCookie, isAuthLoginAction]);
 
   return (
     <>
@@ -108,6 +130,14 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
             />
             <input
               ref={(e) => (memberRef.current[2] = e)}
+              type='password'
+              name='pw2'
+              value={memberState.pw2}
+              onChange={onChangeMemberState}
+              placeholder='Password Confirm'
+            />
+            <input
+              ref={(e) => (memberRef.current[3] = e)}
               type='text'
               name='email'
               value={memberState.email}
@@ -115,7 +145,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
               placeholder='Email'
             />
             <input
-              ref={(e) => (memberRef.current[3] = e)}
+              ref={(e) => (memberRef.current[4] = e)}
               type='text'
               name='phoneNumber'
               value={memberState.phoneNumber}

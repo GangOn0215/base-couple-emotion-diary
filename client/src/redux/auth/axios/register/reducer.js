@@ -28,6 +28,7 @@ const axiosRegisterReducer = (currentState = initialState, action) => {
         status: 'REGISTER_SUCCESS',
         token: action.payload.data.token,
         memberId: action.payload.data.memberId,
+        error: '',
         // memberInfo: action.payload,
       };
       break;
@@ -37,8 +38,7 @@ const axiosRegisterReducer = (currentState = initialState, action) => {
         isLoading: false,
         status: 'REGISTER_FAIL',
         token: '',
-
-        // error: action.payload,
+        error: action.payload,
       };
       break;
     case REGISTER_NETWORK_ERROR:

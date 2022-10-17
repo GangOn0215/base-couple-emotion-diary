@@ -62,13 +62,26 @@ const Login = ({ auth, axiosLogin, axiosLoginAction, isAuthLoginAction }) => {
   };
 
   useEffect(() => {
-    console.log(axiosLogin);
     switch (axiosLogin.status) {
       case 'LOGIN_SUCCESS':
         setCookie('x_auth', axiosLogin.token);
         isAuthLoginAction();
         break;
       case 'LOGIN_FAIL':
+        switch (axiosLogin.error) {
+          case 'ERROR_ID':
+            alert('아이디가 존재 하지 않습니다.');
+            break;
+          case 'ERROR_PW':
+            alert('패스워드가 일치하지않습니다.');
+            break;
+          default:
+            break;
+        }
+
+        setLoginID('');
+        setLoginPW('');
+
         isAuthLogoutAction();
         break;
       default:
@@ -110,7 +123,6 @@ const Login = ({ auth, axiosLogin, axiosLoginAction, isAuthLoginAction }) => {
                 placeholder='Password'
               />
               <button onClick={handleLogin}>Login</button>
-              <button onClick={handleCheckJWT}>checkJWT</button>
               <div className='icon-sign-up'>
                 <Link to='/signup'>
                   <FontAwesomeIcon icon={faUser} />

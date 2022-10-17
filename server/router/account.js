@@ -41,7 +41,7 @@ router.post('/login', async (req, res) => {
     res.json({
       status: 'login_fail',
       data: {},
-      error: 'ID not found.',
+      error: 'ERROR_ID',
     });
 
     return;
@@ -54,7 +54,7 @@ router.post('/login', async (req, res) => {
     res.json({
       status: 'login_fail',
       data: {},
-      error: 'The password is different.',
+      error: 'ERROR_PW',
     });
 
     return;

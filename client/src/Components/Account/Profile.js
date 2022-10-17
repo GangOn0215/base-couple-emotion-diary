@@ -37,7 +37,6 @@ const Profile = ({ auth, isAuthLogoutAction }) => {
     // checkLogin
     axios.post(`${getActionUrl}/account/row`, {}, config).then((res) => {
       if (res.data.isAuth) {
-        console.log(res.data);
         const memberInfo = res.data.member;
         setMember({
           id: memberInfo.id,

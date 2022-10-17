@@ -3,6 +3,7 @@ import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGIN_NETWORK_ERROR, LOGOU
 const initialState = {
   isLoading: false,
   status: 'LOGIN_FAIL',
+  error: '',
 };
 
 const axiosLoginReducer = (currentState = initialState, action) => {
@@ -12,6 +13,7 @@ const axiosLoginReducer = (currentState = initialState, action) => {
       newState = {
         ...currentState,
         isLoading: true,
+        error: '',
       };
       break;
     case LOGIN_SUCCESS:
@@ -29,8 +31,7 @@ const axiosLoginReducer = (currentState = initialState, action) => {
         isLoading: false,
         status: 'LOGIN_FAIL',
         token: '',
-
-        // error: action.payload,
+        error: action.payload,
       };
       break;
     case LOGIN_NETWORK_ERROR:
