@@ -118,7 +118,7 @@ router.post('/overlap', async (req, res) => {
 });
 
 router.post('/row', authChecker, async (req, res) => {
-  const getUser = await Member.findOne({ id: req.body.id });
+  const getUser = await Member.findOne({ _id: req.user.id }).select('-pw');
 
   if (getUser) {
     return res.send({
