@@ -20,15 +20,11 @@ if (process.env.NODE_ENV === 'develop') {
 }
 
 // Model
+const connect = require('../models');
 const Member = require('../models/Member');
 
-const row_id = async (id) => {
-  return await Member.findById(id).select('-pw');
-};
-
-const row_email = async (email) => {
-  return await Member.findById(email).select('-pw');
-};
+// mongoDB 연결
+connect();
 
 router.get('/', (req, res) => {
   console.log('account');
@@ -84,7 +80,8 @@ router.post('/login', async (req, res) => {
 
 //authChecker: jwt 체크하는 middleware
 router.post('/checkLogin', authChecker, async (req, res) => {
-  const getUser = await row_id(req.user.id);
+  const getUser = await Member.findOne({ id: req.user.id }).select('-pw');
+
   if (getUser) {
     res.send({
       isAuth: true,
@@ -92,54 +89,68 @@ router.post('/checkLogin', authChecker, async (req, res) => {
   }
 });
 
-/**
- * type
- *   id, email
- *
- */
-router.get('/overlap', async (req, res) => {
-  let type = null;
+router.post('/overlap', async (req, res) => {
+  let getUser = null;
 
-  switch (req.query.type) {
+  switch (req.body.type) {
     case 'id':
-      const getUser = await row_id(req.user.id);
+      getUser = await Member.findOne({ id: req.body.data });
       break;
     case 'email':
+      getUser = await Member.findOne({ email: req.body.data });
       break;
+    case 'phoneNumber':
+      getUser = await Member.findOne({ phoneNumber: req.body.data });
     default:
       break;
   }
-  console.log(req.query.type);
 
-  res.send(req.query.type);
-});
+  // user 데이터가 존재
+  if (getUser) {
+    return res.send({
+      overlap: true,
+    });
+  }
 
-router.post('/checkOverlapEmail', async (req, res) => {
-  const getUser = await row_id(req.user.email);
+  return res.send({
+    overlap: false,
+  });
 });
 
 router.post('/row', authChecker, async (req, res) => {
-  const getUser = await row_id(req.user.id);
+  const getUser = await Member.findOne({ id: req.body.id });
 
   if (getUser) {
-    res.send({
+    return res.send({
       isAuth: true,
       member: getUser,
     });
   }
+
+  res.send({
+    isAuth: false,
+  });
 });
 
 router.post('/register', async (req, res) => {
   const reqBody = req.body;
-  console.log(reqBody);
+  const overlap = {};
 
-  const checkOverlapData = await Member.findOne({ id: req.body.id });
+  overlap.id = await Member.findOne({ id: reqBody.id });
+  overlap.email = await Member.findOne({ email: reqBody.email });
+  overlap.phoneNumber = await Member.findOne({ phoneNumber: reqBody.phoneNumber });
 
   // 이미 데이터가 존재함
-  if (checkOverlapData) {
+  if (overlap.id || overlap.email || overlap.phoneNumber) {
+    let overlapType = '';
+
+    if (overlap.id) overlapType = 'id';
+    if (overlap.email) overlapType = 'email';
+    if (overlap.phoneNumber) overlapType = 'phoneNumber';
+
     res.json({
       status: 'register_fail',
-      error: '아이디가 존재 합니다.',
+      error: `${overlapType} 존재 합니다.`,
     });
 
     return;

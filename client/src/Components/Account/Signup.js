@@ -1,12 +1,10 @@
-import axios from 'axios';
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { connect } from 'react-redux';
 
 import { axiosRegisterAction } from '../../redux/auth/axios/register/action';
-import { isAuthLoginAction } from '../../redux/auth/action';
+import { isAuthLoginAction, isAuthLogoutAction } from '../../redux/auth/action';
 
 // awesome icon
 import { faGears } from '@fortawesome/free-solid-svg-icons';
@@ -93,6 +91,12 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
 
         setCookie('x_auth', axiosRegister.token);
         isAuthLoginAction();
+        break;
+      case 'REGISTER_FAIL':
+        alert(axiosRegister.error);
+
+        removeCookie('x_auth');
+        isAuthLogoutAction();
         break;
       default:
         break;

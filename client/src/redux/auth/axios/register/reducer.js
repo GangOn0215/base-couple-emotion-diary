@@ -7,21 +7,20 @@ import {
 
 const initialState = {
   isLoading: false,
-  status: 'REGISTER_FAIL',
+  status: '',
 };
 
 const axiosRegisterReducer = (currentState = initialState, action) => {
-  console.log(action);
   let newState = {};
   switch (action.type) {
     case REGISTER_REQUEST:
       newState = {
         ...currentState,
         isLoading: true,
+        error: '',
       };
       break;
     case REGISTER_SUCCESS:
-      console.log(action.payload);
       newState = {
         ...currentState,
         isLoading: false,
@@ -29,7 +28,6 @@ const axiosRegisterReducer = (currentState = initialState, action) => {
         token: action.payload.data.token,
         memberId: action.payload.data.memberId,
         error: '',
-        // memberInfo: action.payload,
       };
       break;
     case REGISTER_FAILURE:
