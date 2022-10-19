@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Diary = require('./Diary');
 
 const { Schema } = mongoose;
 
@@ -33,6 +34,10 @@ const Member = Schema(
       type: Number,
       default: 0,
     },
+    lover: Schema.Types.ObjectId,
+    diary: [Diary],
+    fallowing: [],
+    fallow: [],
   },
   { timestamps: true },
 );

@@ -22,6 +22,7 @@ if (process.env.NODE_ENV === 'develop') {
 // Model
 const connect = require('../models');
 const Member = require('../models/Member');
+const Diary = require('../models/Diary');
 
 // mongoDB 연결
 connect();
@@ -79,13 +80,35 @@ router.post('/login', async (req, res) => {
 });
 
 //authChecker: jwt 체크하는 middleware
-router.post('/checkLogin', authChecker, async (req, res) => {
-  const getUser = await Member.findOne({ id: req.user.id }).select('-pw');
+router.post('/insert', authChecker, async (req, res) => {
+  const getUser = await Member.findOne({ _id: req.user.id });
+  console.log(req.user);
+  console.log(req.body);
 
   if (getUser) {
-    res.send({
-      isAuth: true,
-    });
+    Member.updateOne(
+      { _id: req.user.id },
+      {
+        $push: {
+          diary: {
+            title: req.body.title,
+            content: req.body.content,
+            mood: req.body.mood,
+          },
+        },
+      },
+    ).then((err) => console.log(err));
+
+    // const newDiary = new Diary({
+    //   title: req.body.title,
+    //   content: req.body.contnet,
+    //   mood: req.body.mood,
+    // });
+
+    // newDiary.save().then((err, result) => {
+    //   console.log(result);
+    //   console.log(err);
+    // });
   }
 });
 
