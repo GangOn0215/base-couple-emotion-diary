@@ -1,5 +1,3 @@
-const config = require('./config');
-
 // Model
 const connect = require('../models');
 const Member = require('../models/Member');
@@ -12,7 +10,6 @@ const query = async (req, res) => {
 
   //row
   //63522484ce189d57cb8b4056
-  //6350134d02abc717af5270dc
   const diary = await Member.findOne({ 'diary._id': '63522484ce189d57cb8b4056' }, { 'diary.$': 1 });
   const diaries = await Member.find({}, { diary: 1 });
   // const diary = await Member.find({}, { '$': 1 });
@@ -24,30 +21,50 @@ const query = async (req, res) => {
   // res.send(diaries);
 };
 
-const row = (req, res) => {
-  // const diary = await
-};
-const lists = (req, res) => {};
-const insert = async (req, res) => {
-  const getUser = await Member.findOne({ _id: req.user.id });
+const row = async (req, res) => {
+  let getRow = await Member.find({ 'diary._id': req.query.id }, { 'diary.$': 1 });
+  diary = getRow[0].diary[0];
 
-  if (getUser) {
-    Member.updateOne(
-      { _id: getUser._id },
-      {
-        $push: {
-          diary: {
-            title: req.body.title,
-            content: req.body.content,
-            mood: req.body.mood,
-          },
+  res.send({ diary: diary });
+};
+
+const lists = async (req, res) => {
+  let getRows = await Member.findOne({ _id: req.user.id }, { diary: 1 });
+  diaryList = getRows.diary;
+
+  res.send({ list: diaryList });
+};
+
+const insert = async (req, res) => {
+  Member.updateOne(
+    { _id: req.user._id },
+    {
+      $push: {
+        diary: {
+          title: req.body.title,
+          content: req.body.content,
+          mood: req.body.mood,
         },
       },
-    ).then((err) => console.log(err));
-  }
+    },
+  ).then((err) => console.log(err));
 };
 
-const update = async () => (req, res) => {};
+const update = async (req, res) => {
+  const result = await Member.updateOne(
+    { _id: req.user.id, 'diary._id': req.body._id },
+    {
+      $set: {
+        'diary.$.title': req.body.title,
+        'diary.$.content': req.body.content,
+        'diary.$.mood': req.body.mood,
+      },
+    },
+  );
+
+  res.send(result);
+};
+
 const deleteOne = async () => (req, res) => {};
 
 module.exports = {

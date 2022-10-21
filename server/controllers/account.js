@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // initialize config
-const config = require('./config');
+const config = require('../config');
 
 // Model
 const connect = require('../models');

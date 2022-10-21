@@ -10,8 +10,8 @@ router.get('/');
 router.get('/query', controller.query);
 
 router.get('/row', controller.row);
-router.get('/lists', controller.lists);
-router.post('/insert', controller.insert);
+router.get('/lists', authChecker, controller.lists);
+router.post('/insert', authChecker, controller.insert);
 router.post('/update', authChecker, controller.update);
 router.post('/delete', authChecker, controller.deleteOne);
 
