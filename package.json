@@ -8,7 +8,10 @@
     "start": "cd server && npm ci && node app.js",
     "client": "cd client && npm run start",
     "server": "cd server && npm run startDev",
-    "local-start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "local-build-start": "npm run local-client && npm run local-server && npm run local-start",
+    "local-start": "npx concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "local-client": "cd client && npm ci",
+    "local-server": "cd server && npm ci",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
