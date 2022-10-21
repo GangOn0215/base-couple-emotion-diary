@@ -13,12 +13,12 @@ const Diary = Schema(
     },
     mood: {
       /* 
-      1: very bad
-      2: bad
-      3: soso
-      4: good
-      5: very good
-    */
+        1: very bad
+        2: bad
+        3: soso
+        4: good
+        5: very good
+      */
       type: Number,
       default: 1,
     },
@@ -30,11 +30,11 @@ const Diary = Schema(
     },
     lv: {
       /* 
-      0: default (public)
-      1: follow (proteted)
-      2: girfrend (proteted)
-      3: private
-    */
+        0: default (public)
+        1: follow (proteted)
+        2: girfrend (proteted)
+        3: private
+      */
       type: Number,
       default: 0,
     },
