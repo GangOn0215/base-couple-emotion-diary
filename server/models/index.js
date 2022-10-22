@@ -1,15 +1,10 @@
 const mongoose = require('mongoose');
 
+// initialize config
+const config = require('../config');
+
 const connect = () => {
-  if (process.env.NODE_ENV === 'develop') {
-    const private = require('../private.json');
-    const mongoJSON = private.mongodb;
-    mongoose.connect(
-      `mongodb+srv://${mongoJSON.id}:${mongoJSON.pw}@cluster0.oiy1b.mongodb.net/couple_diary?retryWrites=true&w=majority`,
-    );
-  } else {
-    mongoose.connect(process.env.MONGODB_URI);
-  }
+  mongoose.connect(config.mongodbConnectURL);
 };
 
 mongoose.connection.once('open', function () {

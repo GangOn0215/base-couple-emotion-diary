@@ -23,7 +23,9 @@ const query = async (req, res) => {
 
 const row = async (req, res) => {
   let getRow = await Member.find({ 'diary._id': req.query.id }, { 'diary.$': 1 });
-  diary = getRow[0].diary[0];
+  let diary = [];
+
+  if (getRow.length > 0) diary = getRow[0].diary[0];
 
   res.send({ diary: diary });
 };

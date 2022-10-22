@@ -1,18 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faImage } from '@fortawesome/free-solid-svg-icons';
+// import { falImage}
 
 const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
   const { dataIdx } = useParams();
 
-  const inputAuthor = useRef();
   const inputTitle = useRef();
   const textareaContent = useRef();
   const navigate = useNavigate();
   const [state, setState] = useState({
-    author: '',
     title: '',
     content: '',
-    emotion: 1,
+    emotion: 3,
     createAt: new Date().getTime(),
     updateAt: null,
   });
@@ -33,7 +34,6 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
 
     // 데이터를 성공적으로 추가 했다면 초기화 시켜줍니다.
     setState({
-      author: '',
       title: '',
       content: '',
       emotion: 1,
@@ -54,12 +54,6 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
   };
 
   const checkValidation = () => {
-    if (state.author.length < 1) {
-      inputAuthor.current.focus();
-
-      return;
-    }
-
     if (state.title.length < 1) {
       inputTitle.current.focus();
 
@@ -82,7 +76,6 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
           title: tempList.title,
           content: tempList.content,
           emotion: tempList.emotion,
-          author: tempList.author,
           createAt: tempList.createAt,
           updateAt: tempList.updateAt,
         });
@@ -98,15 +91,13 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
 
   return (
     <div className='editor'>
-      <h2>Today Diary</h2>
-      <input
-        ref={inputAuthor}
-        type='text'
-        name='author'
-        placeholder='author'
-        value={state.author}
-        onChange={handleChangeState}
-      />
+      <div className='image-container'>
+        <label htmlFor='diary-img'>
+          <FontAwesomeIcon icon={faImage} />
+        </label>
+        <input type='file' id='diary-img' />
+        {/* <FontAwesomeIcon icon={['fad', 'stroopwafel']} /> */}
+      </div>
       <input
         ref={inputTitle}
         type='text'
@@ -123,17 +114,19 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
         value={state.content}
         onChange={handleChangeState}
       />
-      <select name='emotion' value={state.emotion} onChange={handleChangeState}>
-        <option value={1}>1</option>
-        <option value={2}>2</option>
-        <option value={3}>3</option>
-        <option value={4}>4</option>
-        <option value={5}>5</option>
+      <select name='emotion' value={state.emotion ? state.emotion : 3} onChange={handleChangeState}>
+        <option value={1}>very bad</option>
+        <option value={2}>bad</option>
+        <option value={3}>soso</option>
+        <option value={4}>good</option>
+        <option value={5}>very good</option>
       </select>
-      <button onClick={isEdit ? handleUpdateSubmit : handleCreateSubmit}>Save Diary</button>
-      <button ref={buttonClick} onClick={onHandleClick} className='link-button'>
-        <Link to='/list'>Diary List</Link>
-      </button>
+      <div className='button-wrap'>
+        <button onClick={isEdit ? handleUpdateSubmit : handleCreateSubmit}>Save Diary</button>
+        <button ref={buttonClick} onClick={onHandleClick} className='link-button'>
+          <Link to='/list'>Diary List</Link>
+        </button>
+      </div>
     </div>
   );
 };
