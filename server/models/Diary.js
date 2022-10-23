@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
+const Image = require('./Image');
 
-const Diary = Schema(
+const DiarySchema = Schema(
   {
     title: {
       type: String,
@@ -22,12 +23,7 @@ const Diary = Schema(
       type: Number,
       default: 1,
     },
-    profileImg: {
-      type: String,
-    },
-    img: {
-      type: String,
-    },
+    img: { Image },
     lv: {
       /* 
         0: default (public)
@@ -42,4 +38,4 @@ const Diary = Schema(
   { timestamps: true },
 );
 
-module.exports = Diary;
+module.exports = DiarySchema;

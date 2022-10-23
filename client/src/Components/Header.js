@@ -13,8 +13,21 @@ const Header = ({ auth }) => {
             <Link to='/list'>Diary</Link>
           </li>
           <li></li>
-          <li>
-            {auth.isAuth ? <Link to='/profile'>Profile</Link> : <Link to='/login'>Login</Link>}
+          <li className='li-dropdown'>
+            {auth.isAuth ? (
+              <>
+                <div className='dropdown-hover'>
+                  <Link to='/profile'>Profile</Link>
+                </div>
+                <div className='dropdown-content'>
+                  <Link to='/profile'>Profile</Link>
+                  <Link to='/update'>Update</Link>
+                  <Link to='/logout'>Logout</Link>
+                </div>
+              </>
+            ) : (
+              <Link to='/login'>Login</Link>
+            )}
           </li>
         </ul>
       </nav>

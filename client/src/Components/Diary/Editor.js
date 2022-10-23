@@ -13,6 +13,7 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
   const [state, setState] = useState({
     title: '',
     content: '',
+    image: '',
     emotion: 3,
     createAt: new Date().getTime(),
     updateAt: null,

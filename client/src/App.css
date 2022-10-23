@@ -40,6 +40,35 @@ header nav ul li {
 	text-align: center;
 	padding: 10px;
 }
+header nav ul .li-dropdown {
+	padding: 0px;
+}
+header nav ul li .dropdown-hover {
+	padding: 10px;
+	width: 100px;
+	background: #eee;
+}
+
+header nav ul li .dropdown-content {
+	display: none;
+	flex-direction: column;
+	justify-content: space-between;
+	position: absolute;
+	background-color: white;
+	border: 1px solid #eee;
+	width: 100px;
+	height: 100px;
+	padding: 10px;
+}
+
+header nav ul .li-dropdown:hover .dropdown-content {
+	display: flex;
+}
+
+header nav ul li .dropdown-content a:last-child {
+	border-bottom: none;
+}
+
 header nav ul li button {
 	border: none;
 	background: none;

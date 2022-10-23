@@ -3,7 +3,7 @@ const Diary = require('./Diary');
 
 const { Schema } = mongoose;
 
-const Member = Schema(
+const MemberSchema = Schema(
   {
     id: {
       type: String,
@@ -11,6 +11,10 @@ const Member = Schema(
       unique: true,
     },
     pw: {
+      type: String,
+      required: true,
+    },
+    name: {
       type: String,
       required: true,
     },
@@ -26,14 +30,17 @@ const Member = Schema(
     profileImg: {
       type: String,
     },
+    // lv: game lv
     lv: {
       type: Number,
       default: 0,
     },
+    // permission
     authLV: {
       type: Number,
       default: 0,
     },
+    history: [{ name: { type: String } }],
     lover: Schema.Types.ObjectId,
     diary: [Diary],
     fallowing: [],
@@ -42,4 +49,4 @@ const Member = Schema(
   { timestamps: true },
 );
 
-module.exports = mongoose.model('member', Member);
+module.exports = mongoose.model('member', MemberSchema);
