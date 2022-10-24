@@ -1,8 +1,12 @@
 import { LOGIN, LOGOUT } from './types';
 
-export const isAuthLoginAction = () => {
+export const isAuthLoginAction = (memberId) => {
+  const payload = {
+    memberId,
+  };
   return {
     type: LOGIN,
+    payload: payload,
   };
 };
 

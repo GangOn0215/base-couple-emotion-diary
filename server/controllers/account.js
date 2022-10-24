@@ -55,7 +55,7 @@ const login = async (req, res) => {
   jwt.sign(payload, config.JWT_KEY, { expiresIn: '1h' }, (err, token) => {
     if (err) throw err;
     res.cookie('x_auth', token, { httpOnly: false });
-    res.send({ status: 'login_success', token: token, data: resData });
+    res.send({ status: 'login_success', token: token, member: resData });
   });
 };
 const checkLogin = async (req, res) => {

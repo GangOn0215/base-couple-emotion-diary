@@ -17,11 +17,13 @@ const axiosLoginReducer = (currentState = initialState, action) => {
       };
       break;
     case LOGIN_SUCCESS:
+      console.log(action.payload);
       newState = {
         ...currentState,
         isLoading: false,
         status: 'LOGIN_SUCCESS',
         token: action.payload.data.token,
+        id: action.payload.data.member.id,
         // memberInfo: action.payload,
       };
       break;

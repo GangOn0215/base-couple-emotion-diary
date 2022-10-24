@@ -65,7 +65,7 @@ const Login = ({ auth, axiosLogin, axiosLoginAction, isAuthLoginAction }) => {
     switch (axiosLogin.status) {
       case 'LOGIN_SUCCESS':
         setCookie('x_auth', axiosLogin.token);
-        isAuthLoginAction();
+        isAuthLoginAction(axiosLogin.id);
         break;
       case 'LOGIN_FAIL':
         switch (axiosLogin.error) {
@@ -107,7 +107,7 @@ const Login = ({ auth, axiosLogin, axiosLoginAction, isAuthLoginAction }) => {
       ) : (
         <>
           <div className='form-container'>
-            <div className='form-box'>
+            <div className='form-box login'>
               <input
                 ref={refInputID}
                 type='text'

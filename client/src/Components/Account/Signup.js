@@ -15,15 +15,16 @@ import './account.css';
 const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister }) => {
   const navigate = useNavigate();
   const memberRef = useRef([]);
-  const [cookies, setCookie, removeCookie] = useCookies(['x_auth']);
+  const [setCookie, removeCookie] = useCookies(['x_auth']);
 
   const [memberState, setMemberState] = useState({
     id: '',
     pw: '',
     pw2: '',
+    name: '',
     email: '',
     phoneNumber: '',
-    age: '30',
+    age: 0,
   });
 
   const onChangeMemberState = (e) => {
@@ -35,6 +36,10 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
 
   const onHandleSignUp = async () => {
     let validation = true;
+    const regName = /^[가-힣]{2,4}$/; // 한글만
+    const regKoen = /^[가-힣a-zA-Z]+$/; // 영문, 한글 가능
+    const regId = /^[A-Za-z]{1}[A-Za-z0-9]{3,19}$/; // 영문, 숫자 4~20자리 첫글자 숫자 x
+    const regPhone = /(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/; // 전화번호
 
     for (let i = 0; i < memberRef.current.length; i++) {
       //required
@@ -72,6 +77,8 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
         memberState.email,
         memberState.phoneNumber,
         memberState.age,
+        memberState.name,
+        memberState.birthday,
       );
     } else {
       return;
@@ -110,11 +117,11 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
           <div className='main-site'>
             <div className='main-header pad-top wrapper' id='mainHeader'></div>
             <div className='loader loader-7'></div>
-          </div>{' '}
+          </div>
         </>
       ) : (
         <div className='form-container'>
-          <div className='form-box'>
+          <div className='form-box signup'>
             <input
               ref={(e) => (memberRef.current[0] = e)}
               type='text'
@@ -142,13 +149,21 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
             <input
               ref={(e) => (memberRef.current[3] = e)}
               type='text'
+              name='name'
+              value={memberState.name}
+              onChange={onChangeMemberState}
+              placeholder='Name'
+            />
+            <input
+              ref={(e) => (memberRef.current[4] = e)}
+              type='text'
               name='email'
               value={memberState.email}
               onChange={onChangeMemberState}
               placeholder='Email'
             />
             <input
-              ref={(e) => (memberRef.current[4] = e)}
+              ref={(e) => (memberRef.current[5] = e)}
               type='text'
               name='phoneNumber'
               value={memberState.phoneNumber}
