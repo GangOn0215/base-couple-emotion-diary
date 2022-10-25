@@ -14,7 +14,7 @@ import './account.css';
 
 const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister }) => {
   const navigate = useNavigate();
-  const memberRef = useRef([]);
+  const memberRef = useRef({});
   const [setCookie, removeCookie] = useCookies(['x_auth']);
 
   const [memberState, setMemberState] = useState({
@@ -35,21 +35,30 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
   };
 
   const onHandleSignUp = async () => {
-    let validation = true;
+    // let validation = true;
+    const validation = {
+      regex: true,
+      overlap: true,
+      required: true,
+    };
+
     const regName = /^[가-힣]{2,4}$/; // 한글만
-    const regKoen = /^[가-힣a-zA-Z]+$/; // 영문, 한글 가능
-    const regId = /^[A-Za-z]{1}[A-Za-z0-9]{3,19}$/; // 영문, 숫자 4~20자리 첫글자 숫자 x
+    // const regKoen = /^[가-힣a-zA-Z]+$/; // 영문, 한글 가능
+    const regId = /^[A-Za-z]{1}[A-Za-z0-9]{2,7}$/; // 영문, 숫자 2~8자리 첫글자 숫자 x
     const regPhone = /(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/; // 전화번호
+    const regEmail =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/i;
 
-    for (let i = 0; i < memberRef.current.length; i++) {
-      //required
-      if (memberState[memberRef.current[i].name].length <= 0) {
-        validation = false;
-        memberRef.current[i].focus();
+    Object.values(memberRef.current).every((item) => {
+      if (memberState[item.ref.name].length <= 0) {
+        validation.required = false;
+        item.ref.focus();
 
-        break;
+        return false;
       }
-    }
+
+      return true;
+    });
 
     // check overlap - member id, member email
 
@@ -67,6 +76,57 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
 
       memberRef.current[1].focus();
       validation = false;
+    }
+
+    // validation 정규식 체크하는 부분은 후에 foreach 또는 loop로 처리할 예정 입니다.
+
+    // validation regex id
+    if (!regId.test(memberState.id)) {
+      setMemberState({
+        ...memberState,
+        id: '',
+      });
+
+      alert('아이디는 영문, 숫자 2~8자리이며 첫글자 숫자 불가능 합니다');
+
+      return;
+    }
+    // validation regex email
+    if (!regEmail.test(memberState.email)) {
+      setMemberState({
+        ...memberState,
+        email: '',
+      });
+
+      alert('이메일 형식을 확인해주세요.');
+
+      return;
+    }
+
+    // validation regex phone
+    if (!regPhone.test(memberState.phoneNumber)) {
+      setMemberState({
+        ...memberState,
+        phoneNumber: '',
+      });
+
+      alert('전화번호를 확인해주세요.');
+      memberRef.current.phoneNumber.ref.focus();
+
+      return;
+    }
+
+    // validation regex name
+    if (!regName.test(memberState.name)) {
+      setMemberState({
+        ...memberState,
+        name: '',
+      });
+
+      alert('이름은 한글, 2~4글자만 가능합니다.');
+      memberRef.current.name.ref.focus();
+
+      return;
     }
 
     //validation 통과
@@ -123,7 +183,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
         <div className='form-container'>
           <div className='form-box signup'>
             <input
-              ref={(e) => (memberRef.current[0] = e)}
+              ref={(e) => (memberRef.current.id = { seq: 1, ref: e })}
               type='text'
               name='id'
               value={memberState.id}
@@ -131,7 +191,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
               placeholder='ID'
             />
             <input
-              ref={(e) => (memberRef.current[1] = e)}
+              ref={(e) => (memberRef.current.pw = { seq: 2, ref: e })}
               type='password'
               name='pw'
               value={memberState.pw}
@@ -139,7 +199,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
               placeholder='Password'
             />
             <input
-              ref={(e) => (memberRef.current[2] = e)}
+              ref={(e) => (memberRef.current.pw2 = { seq: 3, ref: e })}
               type='password'
               name='pw2'
               value={memberState.pw2}
@@ -147,7 +207,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
               placeholder='Password Confirm'
             />
             <input
-              ref={(e) => (memberRef.current[3] = e)}
+              ref={(e) => (memberRef.current.name = { seq: 4, ref: e })}
               type='text'
               name='name'
               value={memberState.name}
@@ -155,7 +215,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
               placeholder='Name'
             />
             <input
-              ref={(e) => (memberRef.current[4] = e)}
+              ref={(e) => (memberRef.current.email = { seq: 5, ref: e })}
               type='text'
               name='email'
               value={memberState.email}
@@ -163,7 +223,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
               placeholder='Email'
             />
             <input
-              ref={(e) => (memberRef.current[5] = e)}
+              ref={(e) => (memberRef.current.phoneNumber = { seq: 6, ref: e })}
               type='text'
               name='phoneNumber'
               value={memberState.phoneNumber}
@@ -185,7 +245,6 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     auth: state.auth,
     axiosLogin: state.axiosLogin,
