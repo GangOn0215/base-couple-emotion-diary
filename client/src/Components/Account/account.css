@@ -57,6 +57,7 @@
 .form-box button:hover {
 	background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, purple);
 }
+
 .login-account button {
 	width: 326px;
 }
@@ -253,4 +254,8 @@
 }
 .profile ul li span {
 	color: #333;
+}
+
+.form-box.signup .error {
+	color: red;
 }

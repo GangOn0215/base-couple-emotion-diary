@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cross-env NODE_ENV=production npx nodemon app.js",
-    "startDev": "cross-env NODE_ENV=development npx nodemon app.js"
+    "startDev": "npx cross-env NODE_ENV=development npx nodemon app.js"
   },
   "author": "",
   "license": "ISC",
