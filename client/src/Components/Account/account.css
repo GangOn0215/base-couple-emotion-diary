@@ -33,14 +33,11 @@
 	box-sizing: border-box;
 	border: 1px solid #ddd;
 	padding: 1px 16px;
+	margin-bottom: -1px;
 }
 
-.form-box input {
-	border-bottom: none;
-}
-
-.form-box input:last-child {
-	border-bottom: 1px solid #ddd;
+.form-box input:focus {
+	outline: none;
 }
 
 .form-box button,
@@ -256,6 +253,6 @@
 	color: #333;
 }
 
-.form-box.signup .error {
+.form-box.signup label.error {
 	color: red;
 }

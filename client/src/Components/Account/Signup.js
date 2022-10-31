@@ -15,7 +15,6 @@ import './account.css';
 const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister }) => {
   const navigate = useNavigate();
   const memberRef = useRef({});
-  const errorRef = useRef({});
   const [setCookie, removeCookie] = useCookies(['x_auth']);
 
   const [memberState, setMemberState] = useState({
@@ -28,14 +27,6 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
     age: 0,
   });
 
-  const [errorState, setErrorState] = useState({
-    id: { status: false, msg: '' },
-    pw: { status: false, msg: '' },
-    name: { status: false, msg: '' },
-    email: { status: false, msg: '' },
-    phoneNumber: { status: false, msg: '' },
-  });
-
   const onChangeMemberState = (e) => {
     setMemberState({
       ...memberState,
@@ -43,39 +34,104 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
     });
   };
 
-  const onHandleSignUp = async () => {
-    // let validation = true;
-    const validation = {
-      regex: true,
-      overlap: true,
-      required: true,
-    };
+  // errorState의 info Props가 에러의 유무를 확인해줍니다.
+  const [errorState, setErrorState] = useState({
+    status: false,
+    id: { status: false, msg: '' },
+    pw: { status: false, msg: '' },
+    pw2: { status: false, msg: '' },
+    name: { status: false, msg: '' },
+    email: { status: false, msg: '' },
+    phoneNumber: { status: false, msg: '' },
+  });
 
+  /**
+   *
+   * 해당 요소요소마다 validation 함수를 따로 만들려 했지만 그렇게 하면 중복 코드가 엉청날것 같아서 통합 할려고 했습니다
+   * 구분은 e.target.name으로 합니다.
+   * event: focus out
+   *
+   */
+  const onCheckVlidation = (e) => {
     // validation 순서 : required > regex > overlap
 
-    const regName = /^[가-힣]{2,4}$/; // 한글만
-    // const regKoen = /^[가-힣a-zA-Z]+$/; // 영문, 한글 가능
-    const regId = /^[A-Za-z]{1}[A-Za-z0-9]{2,7}$/; // 영문, 숫자 2~8자리 첫글자 숫자 x
-    const regPhone = /(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/; // 전화번호
-    const regEmail =
-      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/i; // Email
+    // reg object 형식으로 관리
+    const reg = {
+      id: /^[A-Za-z]{1}[A-Za-z0-9]{2,7}$/, // 영문, 숫자 2~8자리 첫글자 숫자 x
+      name: /^[가-힣]{2,4}$/, // 한글만
+      pw: /(?=.*\d)(?=.*[A-Za-z]).{4,}/,
+      phoneNumber: /(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, // 전화번호
+      email:
+        /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/i, // Email
+      regKoen: /^[가-힣a-zA-Z]+$/, // 영문, 한글 가능
+    };
 
-    // 순회하며 required 부분 체크
-    Object.keys(memberState).forEach((item) => {
-      console.log(memberState[item].length);
-      console.log(errorState);
+    // view msg object 형식으로 관리
+    const msg = {
+      id: {
+        name: '아이디',
+        reg: '아이디는 영문, 숫자 2~8자리만 가능합니다.',
+      },
+      pw: {
+        name: '패스워드',
+        reg: '영어, 숫자 포함 4자 이상만 가능합니다.',
+      },
+      pw2: {
+        name: '패스워드 확인',
+        reg: '',
+      },
+      name: {
+        name: '이름',
+        reg: '이름은 한글, 2~4글자만 가능합니다.',
+      },
+      email: {
+        name: '이메일',
+        reg: '이메일 형식을 확인해주세요.',
+      },
+      phoneNumber: {
+        name: '핸드폰 번호',
+        reg: '전화번호를 확인해주세요.',
+      },
+    };
 
-      if (memberState[item].length <= 0) {
-        setErrorState((prevState) => ({
-          ...prevState,
-          [item]: {
-            status: true,
-            msg: `${item} 은 필수 값 입니다.`,
-          },
-        }));
-      }
-    });
+    const checkValue = e.target.value;
+    const name = e.target.name;
 
+    // validation required check
+    if (!checkValue) {
+      onHandleErrorState(name, `${msg[name].name} 필드는 필수 요소 입니다.`);
+
+      return;
+    }
+
+    // reg check가 존재하며, 정규식 체크를 하지 못했다면
+    if (reg[name] && !reg[name].test(checkValue)) {
+      console.log(name);
+      onHandleErrorState(name, msg[name].reg);
+
+      return;
+    }
+
+    setErrorState((prevState) => ({
+      ...prevState,
+      [name]: {
+        status: false,
+        msg: '',
+      },
+    }));
+  };
+
+  const onHandleErrorState = (elementName, errorMsg) => {
+    setErrorState((prevState) => ({
+      ...prevState,
+      [elementName]: {
+        status: true,
+        msg: errorMsg,
+      },
+    }));
+  };
+
+  const onHandleSignUp = async () => {
     // check password
     if (memberState.pw !== memberState.pw2) {
       alert('패스워드가 다릅니다. ');
@@ -87,61 +143,15 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
       });
 
       memberRef.current[1].focus();
-      validation = false;
-    }
-
-    // validation 정규식 체크하는 부분은 후에 foreach 또는 loop로 처리할 예정 입니다.
-
-    // validation regex id
-    if (!regId.test(memberState.id)) {
-      setMemberState({
-        ...memberState,
-        id: '',
-      });
-
-      alert('아이디는 영문, 숫자 2~8자리이며 첫글자 숫자 불가능 합니다');
-
-      return;
-    }
-    // validation regex email
-    if (!regEmail.test(memberState.email)) {
-      setMemberState({
-        ...memberState,
-        email: '',
-      });
-
-      alert('이메일 형식을 확인해주세요.');
-
-      return;
-    }
-    // validation regex phone
-    if (!regPhone.test(memberState.phoneNumber)) {
-      setMemberState({
-        ...memberState,
-        phoneNumber: '',
-      });
-
-      alert('전화번호를 확인해주세요.');
-      memberRef.current.phoneNumber.ref.focus();
-
-      return;
-    }
-    // validation regex name
-    if (!regName.test(memberState.name)) {
-      setMemberState({
-        ...memberState,
-        name: '',
-      });
-
-      alert('이름은 한글, 2~4글자만 가능합니다.');
-      memberRef.current.name.ref.focus();
-
-      return;
     }
 
     // check overlap
 
+    /* 공사중 */
+    alert('업데이트 중 입니다.');
+    return;
     //validation 통과
+    /*
     if (validation) {
       axiosRegisterAction(
         memberState.id,
@@ -155,6 +165,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
     } else {
       return;
     }
+    */
   };
 
   useEffect(() => {
@@ -194,60 +205,66 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
       ) : (
         <div className='form-container'>
           <div className='form-box signup'>
-            <label ref={(e) => (errorRef.current.id = e)} className='error'>
-              error
-            </label>
+            <label className='error'>{errorState.id.status ? errorState.id.msg : ''}</label>
             <input
-              ref={(e) => (memberRef.current.id = { seq: 1, ref: e })}
-              className={errorState.id.status ? 'error' : ''}
               type='text'
               name='id'
+              className={errorState.id.status ? 'error' : ''}
               value={memberState.id}
               onChange={onChangeMemberState}
+              onBlur={onCheckVlidation}
               placeholder='ID'
             />
-            <label className='error'>error</label>
+            <label className='error'>{errorState.pw.status ? errorState.pw.msg : ''}</label>
             <input
-              ref={(e) => (memberRef.current.pw = { seq: 2, ref: e })}
               type='password'
               name='pw'
+              className={errorState.pw.status ? 'error' : ''}
               value={memberState.pw}
               onChange={onChangeMemberState}
+              onBlur={onCheckVlidation}
               placeholder='Password'
             />
+            <label className='error'>{errorState.pw2.status ? errorState.pw2.msg : ''}</label>
             <input
-              ref={(e) => (memberRef.current.pw2 = { seq: 3, ref: e })}
               type='password'
               name='pw2'
+              className={errorState.pw2.status ? 'error' : ''}
               value={memberState.pw2}
               onChange={onChangeMemberState}
+              onBlur={onCheckVlidation}
               placeholder='Password Confirm'
             />
-            <label className='error'>error</label>
+            <label className='error'>{errorState.name.status ? errorState.name.msg : ''}</label>
             <input
-              ref={(e) => (memberRef.current.name = { seq: 4, ref: e })}
               type='text'
               name='name'
+              className={errorState.name.status ? 'error' : ''}
               value={memberState.name}
               onChange={onChangeMemberState}
+              onBlur={onCheckVlidation}
               placeholder='Name'
             />
-            <label className='error'>error</label>
+            <label className='error'>{errorState.email.status ? errorState.email.msg : ''}</label>
             <input
-              ref={(e) => (memberRef.current.email = { seq: 5, ref: e })}
               type='text'
               name='email'
+              className={errorState.email.status ? 'error' : ''}
               value={memberState.email}
               onChange={onChangeMemberState}
+              onBlur={onCheckVlidation}
               placeholder='Email'
             />
-            <label className='error'>error</label>
+            <label className='error'>
+              {errorState.phoneNumber.status ? errorState.phoneNumber.msg : ''}
+            </label>
             <input
-              ref={(e) => (memberRef.current.phoneNumber = { seq: 6, ref: e })}
               type='text'
               name='phoneNumber'
+              className={errorState.phoneNumber.status ? 'error' : ''}
               value={memberState.phoneNumber}
               onChange={onChangeMemberState}
+              onBlur={onCheckVlidation}
               placeholder='Phone Number'
             />
             <button onClick={onHandleSignUp}>Sing Up</button>
