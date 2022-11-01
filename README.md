@@ -87,5 +87,6 @@ emotion diary 를 따라하며 커플 다이어리의 기반을 다지고 있습
   - _client: axios 로 로그인 결과 status 200일때 데이터 받아와서 console로 찍어주는 코드 추가
   - _server: 데이터 뿌려주는 부분 로직 조금 수정
   
-
-  
+- 2022/11/01
+  - _client: Signup 전반적으로 유효성 검사 체크, 이벤트 처리, axios 중복체크
+  - _server: MemberSchema 에서 age 없던것 수정
