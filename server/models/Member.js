@@ -24,6 +24,9 @@ const MemberSchema = Schema(
     phoneNumber: {
       type: String,
     },
+    age: {
+      type: Number,
+    },
     profileImg: {
       type: String,
     },

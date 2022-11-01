@@ -43,7 +43,6 @@ const Login = ({ auth, axiosLogin, axiosLoginAction, isAuthLoginAction }) => {
   const handleCheckJWT = async () => {
     const config = { headers: { authorization: cookies.x_auth } };
     const result = await axios.post(`${getTodoUrl}/account/checkLogin`, {}, config);
-
     console.log(result);
   };
 
@@ -65,7 +64,7 @@ const Login = ({ auth, axiosLogin, axiosLoginAction, isAuthLoginAction }) => {
     switch (axiosLogin.status) {
       case 'LOGIN_SUCCESS':
         setCookie('x_auth', axiosLogin.token);
-        isAuthLoginAction(axiosLogin.id);
+        isAuthLoginAction(axiosLogin.memberId);
         break;
       case 'LOGIN_FAIL':
         switch (axiosLogin.error) {

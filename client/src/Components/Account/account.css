@@ -51,9 +51,6 @@
 	border: none;
 	cursor: pointer;
 }
-.form-box button:hover {
-	background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, purple);
-}
 
 .login-account button {
 	width: 326px;
@@ -255,4 +252,6 @@
 
 .form-box.signup label.error {
 	color: red;
+	font-size: 0.8rem;
+	margin-bottom: 5px;
 }
