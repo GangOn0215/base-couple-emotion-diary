@@ -22,7 +22,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
   const msg = {
     id: {
       name: '아이디',
-      reg: '아이디는 영문, 숫자 2~8자리만 가능합니다.',
+      reg: '아이디는 영문, 숫자 2~14자리만 가능합니다.',
     },
     pw: {
       name: '패스워드',
@@ -89,7 +89,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
   const onCheckVlidation = (e) => {
     // reg object 형식으로 관리
     const reg = {
-      id: /^[A-Za-z]{1}[A-Za-z0-9]{2,15}$/, // 영문, 숫자 2~8자리 첫글자 숫자 x
+      id: /^[A-Za-z]{1}[A-Za-z0-9]{2,15}$/, // 영문, 숫자 2~14자리 첫글자 숫자 x
       name: /^[가-힣]{2,4}$/, // 한글만
       pw: /(?=.*\d)(?=.*[A-Za-z]).{4,}/,
       phoneNumber: /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/, // 전화번호
