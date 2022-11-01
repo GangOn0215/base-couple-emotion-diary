@@ -36,7 +36,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
 
   // errorState의 info Props가 에러의 유무를 확인해줍니다.
   const [errorState, setErrorState] = useState({
-    status: false,
+    isError: false,
     id: { status: false, msg: '' },
     pw: { status: false, msg: '' },
     pw2: { status: false, msg: '' },
@@ -114,6 +114,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
 
     setErrorState((prevState) => ({
       ...prevState,
+      isError: true,
       [name]: {
         status: false,
         msg: '',
@@ -124,6 +125,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
   const onHandleErrorState = (elementName, errorMsg) => {
     setErrorState((prevState) => ({
       ...prevState,
+      isError: true,
       [elementName]: {
         status: true,
         msg: errorMsg,
@@ -131,10 +133,30 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
     }));
   };
 
+  // Process Signup
   const onHandleSignUp = async () => {
+    // validation 확인 후 만약 에러가 존재한다면 false 하여 setErrorState를 통해 state를 관리 후 return 하여 리랜더링 시킵니다.
+    let validation = true;
+
+    // 순회하며 required 부분 체크
+    Object.keys(memberState).forEach((item) => {
+      if (memberState[item].length <= 0) {
+        validation = false;
+
+        setErrorState((prevState) => ({
+          ...prevState,
+          isError: true,
+          [item]: {
+            status: true,
+            msg: `${item} 은 필수 값 입니다.`,
+          },
+        }));
+      }
+    });
+
     // check password
     if (memberState.pw !== memberState.pw2) {
-      alert('패스워드가 다릅니다. ');
+      alert('패스워드가 다릅니다.');
 
       setMemberState({
         ...memberState,
@@ -142,16 +164,21 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
         pw2: '',
       });
 
-      memberRef.current[1].focus();
+      setErrorState((prevState) => ({
+        ...prevState,
+        isError: true,
+        pw: {
+          status: false,
+          msg: '패스워드가 서로 다릅니다.',
+        },
+      }));
+
+      validation = false;
     }
 
-    // check overlap
-
-    /* 공사중 */
-    alert('업데이트 중 입니다.');
-    return;
+    // 만약 isError 가 true라면 validation 변수에 false를 줘서 회원가입 시키지 않습니다.
+    if (errorState.isError) validation = false;
     //validation 통과
-    /*
     if (validation) {
       axiosRegisterAction(
         memberState.id,
@@ -163,9 +190,9 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
         memberState.birthday,
       );
     } else {
+      alert('유효성 검사 실패 !');
       return;
     }
-    */
   };
 
   useEffect(() => {
