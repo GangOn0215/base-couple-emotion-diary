@@ -11,6 +11,49 @@ const Member = require('../models/Member');
 // mongoDB 연결
 connect();
 
+const overlap = async (req, res) => {
+  let getUser = null;
+
+  switch (req.body.type) {
+    case 'id':
+      getUser = await Member.findOne({ id: req.body.data });
+      break;
+    case 'email':
+      getUser = await Member.findOne({ email: req.body.data });
+      break;
+    case 'phoneNumber':
+      getUser = await Member.findOne({ phoneNumber: req.body.data });
+    default:
+      break;
+  }
+
+  // user 데이터가 존재
+  if (getUser) {
+    return res.send({
+      overlap: true,
+    });
+  }
+
+  return res.send({
+    overlap: false,
+  });
+};
+
+const row = async (req, res) => {
+  const getUser = await Member.findOne({ _id: req.user.id }).select('-pw');
+
+  if (getUser) {
+    return res.send({
+      isAuth: true,
+      member: getUser,
+    });
+  }
+
+  res.send({
+    isAuth: false,
+  });
+};
+
 const login = async (req, res) => {
   // loading animation을 위한 delay
   const wait = (timeToDelay) => new Promise((resolve) => setTimeout(resolve, timeToDelay));
@@ -58,6 +101,7 @@ const login = async (req, res) => {
     res.send({ status: 'login_success', token: token, member: resData });
   });
 };
+
 const checkLogin = async (req, res) => {
   const getUser = await Member.findOne({ id: req.user.id }).select('-pw');
 
@@ -67,47 +111,7 @@ const checkLogin = async (req, res) => {
     });
   }
 };
-const overlap = async (req, res) => {
-  let getUser = null;
 
-  switch (req.body.type) {
-    case 'id':
-      getUser = await Member.findOne({ id: req.body.data });
-      break;
-    case 'email':
-      getUser = await Member.findOne({ email: req.body.data });
-      break;
-    case 'phoneNumber':
-      getUser = await Member.findOne({ phoneNumber: req.body.data });
-    default:
-      break;
-  }
-
-  // user 데이터가 존재
-  if (getUser) {
-    return res.send({
-      overlap: true,
-    });
-  }
-
-  return res.send({
-    overlap: false,
-  });
-};
-const row = async (req, res) => {
-  const getUser = await Member.findOne({ _id: req.user.id }).select('-pw');
-
-  if (getUser) {
-    return res.send({
-      isAuth: true,
-      member: getUser,
-    });
-  }
-
-  res.send({
-    isAuth: false,
-  });
-};
 const register = async (req, res) => {
   const reqBody = req.body;
   const overlap = {};
@@ -140,6 +144,7 @@ const register = async (req, res) => {
     email: reqBody.email,
     phoneNumber: reqBody.phoneNumber,
     age: reqBody.age,
+    name: reqBody.name,
   });
 
   const result = await newMember.save();

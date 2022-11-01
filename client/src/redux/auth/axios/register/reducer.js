@@ -21,6 +21,7 @@ const axiosRegisterReducer = (currentState = initialState, action) => {
       };
       break;
     case REGISTER_SUCCESS:
+      console.log(action.payload);
       newState = {
         ...currentState,
         isLoading: false,

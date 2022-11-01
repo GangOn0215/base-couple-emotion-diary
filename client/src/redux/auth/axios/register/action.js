@@ -34,7 +34,7 @@ const axiosNetworkError = (error) => {
   };
 };
 
-export const axiosRegisterAction = (id, pw, email, phoneNumber, age) => {
+export const axiosRegisterAction = (id, pw, email, phoneNumber, age, name) => {
   let getActionUrl = window.location.origin;
 
   if (process.env.NODE_ENV === 'development') {
@@ -49,11 +49,14 @@ export const axiosRegisterAction = (id, pw, email, phoneNumber, age) => {
         pw,
         email,
         phoneNumber,
+        name,
         age,
       })
       .then((data) => {
         switch (data.data.status) {
           case 'register_success':
+            console.log('register_success');
+            console.log(data);
             dispatch(axiosRegisterSuccess(data));
             break;
           case 'register_fail':
