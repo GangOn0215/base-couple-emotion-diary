@@ -195,14 +195,8 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
     }
 
     // 만약 isError 가 true라면 validation 변수에 false를 줘서 회원가입 시키지 않습니다.
-    if (errorState.isError) {
-      validation = false;
-    } else {
-      validation = true;
-    }
-
     //validation 통과
-    if (validation) {
+    if (validation && !errorState.isError) {
       axiosRegisterAction(
         memberState.id,
         memberState.pw,
