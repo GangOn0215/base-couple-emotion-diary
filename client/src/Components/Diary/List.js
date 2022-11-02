@@ -14,7 +14,6 @@ const List = ({ diaryList, handleUpdate, handleDelete }) => {
 
   return (
     <div className='list'>
-      <h2>Diary List</h2>
       <div className='list-container'>
         {diaryList.map((item) => (
           <div className='list-item' key={item.id}>
@@ -41,7 +40,7 @@ const List = ({ diaryList, handleUpdate, handleDelete }) => {
           </div>
         ))}
         <button ref={buttonClick} onClick={onHandleClick} className='link-button create'>
-          <Link to='/write'>Create Diary</Link>
+          <Link to='/write'>다이어리 작성하기</Link>
         </button>
       </div>
     </div>

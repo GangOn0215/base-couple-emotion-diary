@@ -18,6 +18,11 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
     createAt: new Date().getTime(),
     updateAt: null,
   });
+  const [prevImage, setPrevImage] = useState({
+    status: false,
+    src: '',
+  });
+  const prevImageRef = useRef();
 
   const handleChangeState = (e) => {
     setState({
@@ -90,13 +95,33 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
     buttonClick.current.children[0].click();
   };
 
+  const onChangeImageFile = (e) => {
+    const reader = new FileReader();
+
+    reader.onload = ({ target }) => {
+      setPrevImage({
+        status: true,
+        src: target.result,
+      });
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
+  useEffect(() => {
+    if (prevImage.status) {
+      prevImageRef.current.src = prevImage.src;
+      prevImageRef.current.style.display = 'block';
+    }
+  }, [prevImage]);
+
   return (
     <div className='editor'>
       <div className='image-container'>
         <label htmlFor='diary-img'>
-          <FontAwesomeIcon icon={faImage} />
+          {!prevImage.status ? <FontAwesomeIcon icon={faImage} /> : <></>}
+          <img id='preview-img' ref={prevImageRef} src='' alt='' />
         </label>
-        <input type='file' id='diary-img' />
+        <input type='file' id='diary-img' accept='image/*' onChange={onChangeImageFile} />
         {/* <FontAwesomeIcon icon={['fad', 'stroopwafel']} /> */}
       </div>
       <input
@@ -114,6 +139,7 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
         placeholder='content'
         value={state.content}
         onChange={handleChangeState}
+        spellCheck='false'
       />
       <select name='emotion' value={state.emotion ? state.emotion : 3} onChange={handleChangeState}>
         <option value={1}>very bad</option>
@@ -123,9 +149,9 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
         <option value={5}>very good</option>
       </select>
       <div className='button-wrap'>
-        <button onClick={isEdit ? handleUpdateSubmit : handleCreateSubmit}>Save Diary</button>
+        <button onClick={isEdit ? handleUpdateSubmit : handleCreateSubmit}>Save</button>
         <button ref={buttonClick} onClick={onHandleClick} className='link-button'>
-          <Link to='/list'>Diary List</Link>
+          <Link to='/list'>List</Link>
         </button>
       </div>
     </div>
