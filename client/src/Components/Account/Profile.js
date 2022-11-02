@@ -25,6 +25,12 @@ const Profile = ({ auth, isAuthLogoutAction }) => {
     getActionUrl = 'http://localhost:3001';
   }
 
+  const handleLogout = () => {
+    removeCookie('x_auth');
+
+    isAuthLogoutAction();
+  };
+
   useEffect(() => {
     // 로그인 상태가 아니거나 cookie x_auth가 없다면
     if (!auth.isAuth || !cookies.x_auth) {
@@ -44,16 +50,11 @@ const Profile = ({ auth, isAuthLogoutAction }) => {
           phoneNumber: memberInfo.phoneNumber,
           age: memberInfo.age,
         });
+      } else {
+        handleLogout();
       }
     });
   }, [auth, navigate, cookies, getActionUrl]);
-
-  const handleLogout = () => {
-    removeCookie('x_auth');
-
-    isAuthLogoutAction();
-    // handleAuth(false);
-  };
 
   return (
     <article className='profile'>

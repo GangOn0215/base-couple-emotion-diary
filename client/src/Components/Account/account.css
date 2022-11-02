@@ -143,6 +143,20 @@
 .loader-black {
 	background-color: #333;
 }
+
+.loading-bono {
+	animation: rotate_image 3s linear infinite;
+}
+
+@keyframes rotate_image {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
 /* Loader 6 */
 
 .loader-6 {

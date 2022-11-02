@@ -99,9 +99,10 @@ const Login = ({ auth, axiosLogin, axiosLoginAction, isAuthLoginAction }) => {
       {axiosLogin.isLoading ? (
         <>
           <div className='main-site'>
-            <div className='main-header pad-top wrapper' id='mainHeader'></div>
-            <div className='loader loader-7'></div>
-          </div>{' '}
+            <img className='loading-bono' alt='' src='/assets/image/bono_draw.jpg' />
+            {/* <div className='main-header pad-top wrapper' id='mainHeader'></div>
+            <div className='loader loader-7'></div> */}
+          </div>
         </>
       ) : (
         <>

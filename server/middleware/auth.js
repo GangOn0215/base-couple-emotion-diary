@@ -5,6 +5,10 @@ const config = require('../config');
 const authChecker = (req, res, next) => {
   let token = '';
 
+  if (!req.headers.authorization && !req.cookies.x_auth) {
+    return res.json({ isAuth: false, message: 'token not found' });
+  }
+
   if (req.headers.authorization) {
     token = req.headers.authorization;
   } else {
