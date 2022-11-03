@@ -26,7 +26,6 @@ const List = ({ diaryList, handleUpdate, handleDelete }) => {
     const config = { headers: { Authorization: cookies.x_auth } };
     axios.post(`${getActionUrl}/diary/lists`, {}, config).then((res) => {
       if (res.data) {
-        console.log(res.data);
         setLists(res.data.list);
       }
     });
@@ -35,28 +34,32 @@ const List = ({ diaryList, handleUpdate, handleDelete }) => {
   return (
     <div className='list'>
       <div className='list-container'>
-        {lists.map((item) => (
-          <div className='list-item' key={item._id}>
-            <Link to={`/detail/row/${item._id}`}>
-              <p>
-                <span>Title</span> {item.title}
+        {lists ? (
+          lists.map((item) => (
+            <div className='list-item' key={item._id}>
+              <Link to={`/detail/row/${item._id}`}>
+                <p>
+                  <span>Title</span> {item.title}
+                </p>
+              </Link>
+              <p className='regdate'>
+                <span>RegDate</span>
+                {item.createdAt ? new Date(item.createdAt).toDateString() : '0000-00-00 00:00:00'}
               </p>
-            </Link>
-            <p className='regdate'>
-              <span>RegDate</span>
-              {item.createdAt ? new Date(item.createdAt).toDateString() : '0000-00-00 00:00:00'}
-            </p>
-            <div className='handleButton'>
-              <button onClick={() => onClickDelete(item.id)}>delete</button>
-              <button>
-                <Link to={`/edit/${item.id}`}>update</Link>
-              </button>
-              <button>
-                <Link to={`/detail/${item.id}`}>detail</Link>
-              </button>
+              <div className='handleButton'>
+                <button onClick={() => onClickDelete(item.id)}>delete</button>
+                <button>
+                  <Link to={`/edit/${item.id}`}>update</Link>
+                </button>
+                <button>
+                  <Link to={`/detail/${item.id}`}>detail</Link>
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <></>
+        )}
         <button ref={buttonClick} onClick={onHandleClick} className='link-button create'>
           <Link to='/write'>다이어리 작성하기</Link>
         </button>
