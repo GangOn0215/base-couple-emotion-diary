@@ -1,15 +1,17 @@
+import axios from 'axios';
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
-// import { falImage}
+import { connect } from 'react-redux';
+import { useCookies } from 'react-cookie';
 
-const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
+const Editor = ({ auth, common, handleCreate, handleUpdate, isEdit, diaryList }) => {
+  const navigate = useNavigate();
+  const [cookies, removeCookie] = useCookies(['x_auth']);
   const { dataIdx } = useParams();
-
   const inputTitle = useRef();
   const textareaContent = useRef();
-  const navigate = useNavigate();
   const [state, setState] = useState({
     title: '',
     content: '',
@@ -18,10 +20,12 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
     createAt: new Date().getTime(),
     updateAt: null,
   });
+
   const [prevImage, setPrevImage] = useState({
     status: false,
     src: '',
   });
+
   const prevImageRef = useRef();
 
   const handleChangeState = (e) => {
@@ -32,11 +36,24 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
   };
 
   const handleCreateSubmit = () => {
-    checkValidation();
+    if (!auth.isAuth || !cookies.x_auth) {
+      navigate('/login');
 
-    alert('성공적으로 데이터 추가 하였습니다.');
+      return;
+    }
 
-    handleCreate(state);
+    if (!checkValidation()) {
+      alert('유효성 검사 실패');
+
+      return;
+    }
+
+    const config = { headers: { Authorization: cookies.x_auth } };
+    axios.post(`${common.axiosUrl}/diary/insert`, state, config).then((res) => {
+      if (res.data) {
+        console.log(res);
+      }
+    });
 
     // 데이터를 성공적으로 추가 했다면 초기화 시켜줍니다.
     setState({
@@ -46,7 +63,7 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
       updateAt: null,
     });
 
-    navigate('/list');
+    navigate('/diary/list');
   };
 
   const handleUpdateSubmit = () => {
@@ -63,14 +80,16 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
     if (state.title.length < 1) {
       inputTitle.current.focus();
 
-      return;
+      return false;
     }
 
     if (state.content.length < 1) {
       textareaContent.current.focus();
 
-      return;
+      return false;
     }
+
+    return true;
   };
 
   useEffect(() => {
@@ -89,6 +108,13 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (!auth.isAuth || !cookies.x_auth) {
+      navigate('/login');
+
+      return;
+    }
+  }, [auth]);
   const buttonClick = useRef();
 
   const onHandleClick = () => {
@@ -151,15 +177,22 @@ const Editor = ({ handleCreate, handleUpdate, isEdit, diaryList }) => {
       <div className='button-wrap'>
         <button onClick={isEdit ? handleUpdateSubmit : handleCreateSubmit}>Save</button>
         <button ref={buttonClick} onClick={onHandleClick} className='link-button'>
-          <Link to='/list'>List</Link>
+          <Link to='/diary/list'>List</Link>
         </button>
       </div>
     </div>
   );
 };
 
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+    common: state.common,
+  };
+};
+
 Editor.defaultProps = {
   isEdit: false,
 };
 
-export default Editor;
+export default connect(mapStateToProps)(Editor);

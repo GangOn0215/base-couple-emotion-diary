@@ -13,11 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './account.css';
 import axios from 'axios';
 
-const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister }) => {
-  let getActionUrl = window.location.origin;
-  if (process.env.NODE_ENV === 'development') {
-    getActionUrl = 'http://localhost:3001';
-  }
+const Signup = ({ auth, common, axiosRegisterAction, isAuthLoginAction, axiosRegister }) => {
   // view msg object 형식으로 관리 > Signup Component 안에서 언제든 사용할 수 있도록 처리
   const msg = {
     id: {
@@ -118,7 +114,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
     // 비동기 서버 통신으로 overlap 체크, 만약 name 값이 id, email, phoneNumber 이라면 중복체크 비동기를 실행
     if (['id', 'email', 'phoneNumber'].includes(name)) {
       axios
-        .post(`${getActionUrl}/account/overlap`, {
+        .post(`${common.axiosUrl}/account/overlap`, {
           type: name,
           data: checkValue,
         })
@@ -326,6 +322,7 @@ const Signup = ({ auth, axiosRegisterAction, isAuthLoginAction, axiosRegister })
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
+    common: state.common,
     axiosLogin: state.axiosLogin,
     axiosRegister: state.axiosRegister,
   };

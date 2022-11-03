@@ -57,7 +57,7 @@ const row = async (req, res) => {
 const login = async (req, res) => {
   // loading animation을 위한 delay
   const wait = (timeToDelay) => new Promise((resolve) => setTimeout(resolve, timeToDelay));
-  await wait(2000);
+  await wait(3000);
 
   const data = await Member.findOne({ id: req.body.id });
 

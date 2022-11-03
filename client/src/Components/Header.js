@@ -21,7 +21,7 @@ const Header = ({ auth, isAuthLogoutAction }) => {
             <Link to='/'>About</Link>
           </li>
           <li>
-            <Link to='/list'>Diary</Link>
+            <Link to='/diary/list'>Diary</Link>
           </li>
           <li></li>
           <li className={auth.isAuth ? 'li-dropdown' : ''}>
@@ -34,7 +34,6 @@ const Header = ({ auth, isAuthLogoutAction }) => {
                 <div className='dropdown-content'>
                   <Link to='/profile'>Profile</Link>
                   <Link to='/update'>Update</Link>
-                  {/* <Link to='/logout'>Logout</Link> */}
                   <button onClick={handleLogout}>Logout</button>
                 </div>
               </>

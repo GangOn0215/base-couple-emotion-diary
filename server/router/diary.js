@@ -14,5 +14,6 @@ router.post('/lists', authChecker, controller.lists);
 router.post('/insert', authChecker, controller.insert);
 router.post('/update', authChecker, controller.update);
 router.post('/delete', authChecker, controller.deleteOne);
+router.post('/deleteAll', authChecker, controller.deleteAll);
 
 module.exports = router;

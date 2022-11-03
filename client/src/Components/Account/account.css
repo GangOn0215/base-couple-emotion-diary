@@ -144,8 +144,15 @@
 	background-color: #333;
 }
 
-.loading-bono {
+.loading {
 	animation: rotate_image 3s linear infinite;
+	width: 12rem;
+	position: absolute;
+}
+
+.loading-span {
+	font-size: 1.5rem;
+	font-weight: bold;
 }
 
 @keyframes rotate_image {
@@ -247,6 +254,7 @@
 .main-site {
 	display: flex;
 	align-items: center;
+	justify-content: center;
 }
 
 .btn-logout,

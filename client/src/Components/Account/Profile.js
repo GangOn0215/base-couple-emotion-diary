@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { actionLogout } from '../../redux/auth/axios/login/action';
 import { isAuthLogoutAction } from '../../redux/auth/action';
 
-const Profile = ({ auth, isAuthLogoutAction }) => {
+const Profile = ({ auth, common, isAuthLogoutAction }) => {
   const navigate = useNavigate();
   const [cookies, removeCookie] = useCookies(['x_auth']);
   const [member, setMember] = useState({
@@ -19,11 +19,6 @@ const Profile = ({ auth, isAuthLogoutAction }) => {
     phoneNumber: '',
     age: '',
   });
-
-  let getActionUrl = window.location.origin;
-  if (process.env.NODE_ENV === 'development') {
-    getActionUrl = 'http://localhost:3001';
-  }
 
   const handleLogout = () => {
     removeCookie('x_auth');
@@ -41,9 +36,10 @@ const Profile = ({ auth, isAuthLogoutAction }) => {
 
     const config = { headers: { Authorization: cookies.x_auth } };
     // checkLogin
-    axios.post(`${getActionUrl}/account/row`, {}, config).then((res) => {
+    axios.post(`${common.axiosUrl}/account/row`, {}, config).then((res) => {
       if (res.data.isAuth) {
         const memberInfo = res.data.member;
+
         setMember({
           id: memberInfo.id,
           email: memberInfo.email,
@@ -54,7 +50,7 @@ const Profile = ({ auth, isAuthLogoutAction }) => {
         handleLogout();
       }
     });
-  }, [auth, navigate, cookies, getActionUrl]);
+  }, [auth, navigate, cookies]);
 
   return (
     <article className='profile'>
@@ -87,6 +83,7 @@ const Profile = ({ auth, isAuthLogoutAction }) => {
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
+    common: state.common,
   };
 };
 

@@ -17,15 +17,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //css
 import './account.css';
 
-const Login = ({ auth, axiosLogin, axiosLoginAction, isAuthLoginAction }) => {
+const Login = ({ auth, common, axiosLogin, axiosLoginAction, isAuthLoginAction }) => {
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(['x_auth']);
-
-  let getTodoUrl = window.location.origin;
-
-  if (process.env.NODE_ENV === 'development') {
-    getTodoUrl = 'http://localhost:3001';
-  }
 
   const [loginID, setLoginID] = useState('');
   const [loginPW, setLoginPW] = useState('');
@@ -42,7 +36,7 @@ const Login = ({ auth, axiosLogin, axiosLoginAction, isAuthLoginAction }) => {
 
   const handleCheckJWT = async () => {
     const config = { headers: { authorization: cookies.x_auth } };
-    const result = await axios.post(`${getTodoUrl}/account/checkLogin`, {}, config);
+    const result = await axios.post(`${common.axiosUrl}/account/checkLogin`, {}, config);
     console.log(result);
   };
 
@@ -52,6 +46,7 @@ const Login = ({ auth, axiosLogin, axiosLoginAction, isAuthLoginAction }) => {
       refInputID.current.focus();
       return;
     }
+
     if (loginPW.length <= 0) {
       refInputPW.current.focus();
       return;
@@ -99,7 +94,8 @@ const Login = ({ auth, axiosLogin, axiosLoginAction, isAuthLoginAction }) => {
       {axiosLogin.isLoading ? (
         <>
           <div className='main-site'>
-            <img className='loading-bono' alt='' src='/assets/image/bono_draw.jpg' />
+            <span className='loading-span'>Loading</span>
+            <img className='loading' alt='' src='/assets/image/loading.png' />
             {/* <div className='main-header pad-top wrapper' id='mainHeader'></div>
             <div className='loader loader-7'></div> */}
           </div>
@@ -140,6 +136,7 @@ const Login = ({ auth, axiosLogin, axiosLoginAction, isAuthLoginAction }) => {
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
+    common: state.common,
     axiosLogin: state.axiosLogin,
   };
 };

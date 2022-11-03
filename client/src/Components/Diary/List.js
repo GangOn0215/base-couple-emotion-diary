@@ -2,13 +2,9 @@ import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import { connect } from 'react-redux';
 
-const List = ({ diaryList, handleUpdate, handleDelete }) => {
-  let getActionUrl = window.location.origin;
-  if (process.env.NODE_ENV === 'development') {
-    getActionUrl = 'http://localhost:3001';
-  }
-
+const List = ({ auth, common, handleUpdate, handleDelete }) => {
   const [cookies, removeCookie] = useCookies(['x_auth']);
   const [lists, setLists] = useState([]);
 
@@ -22,14 +18,29 @@ const List = ({ diaryList, handleUpdate, handleDelete }) => {
     buttonClick.current.children[0].click();
   };
 
-  useEffect(() => {
+  const onHandleDeleteAll = () => {
     const config = { headers: { Authorization: cookies.x_auth } };
-    axios.post(`${getActionUrl}/diary/lists`, {}, config).then((res) => {
-      if (res.data) {
-        setLists(res.data.list);
+    axios.post(`${common.axiosUrl}/diary/deleteAll`, {}, config).then((res) => {
+      if (res.data.status) {
+        alert('성공');
+      } else {
+        alert('권한 없음');
       }
     });
-  }, []);
+  };
+
+  useEffect(() => {
+    if (auth.isAuth && cookies.x_auth) {
+      const config = { headers: { Authorization: cookies.x_auth } };
+      axios.post(`${common.axiosUrl}/diary/lists`, {}, config).then((res) => {
+        if (res.data) {
+          setLists(res.data.list);
+        }
+      });
+    } else {
+      setLists([]);
+    }
+  }, [auth]);
 
   return (
     <div className='list'>
@@ -49,10 +60,10 @@ const List = ({ diaryList, handleUpdate, handleDelete }) => {
               <div className='handleButton'>
                 <button onClick={() => onClickDelete(item.id)}>delete</button>
                 <button>
-                  <Link to={`/edit/${item.id}`}>update</Link>
+                  <Link to={`/edit/${item._id}`}>update</Link>
                 </button>
                 <button>
-                  <Link to={`/detail/${item.id}`}>detail</Link>
+                  <Link to={`/detail/${item._id}`}>detail</Link>
                 </button>
               </div>
             </div>
@@ -61,15 +72,25 @@ const List = ({ diaryList, handleUpdate, handleDelete }) => {
           <></>
         )}
         <button ref={buttonClick} onClick={onHandleClick} className='link-button create'>
-          <Link to='/write'>다이어리 작성하기</Link>
+          <Link to='/diary/write'>다이어리 작성하기</Link>
+        </button>
+        <button onClick={onHandleDeleteAll} className='link-button'>
+          전체 삭제
         </button>
       </div>
     </div>
   );
 };
 
-export default List;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+    common: state.common,
+  };
+};
 
 List.defaultProps = {
   diaryList: [],
 };
+
+export default connect(mapStateToProps)(List);

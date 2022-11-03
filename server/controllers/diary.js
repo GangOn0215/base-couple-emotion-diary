@@ -38,18 +38,20 @@ const lists = async (req, res) => {
 };
 
 const insert = async (req, res) => {
-  Member.updateOne(
-    { _id: req.user._id },
+  const result = await Member.updateOne(
+    { _id: req.user.id ? req.user.id : req.user._id },
     {
       $push: {
         diary: {
           title: req.body.title,
           content: req.body.content,
-          mood: req.body.mood,
+          mood: req.body.emotion,
         },
       },
     },
-  ).then((err) => console.log(err));
+  );
+
+  res.send(result);
 };
 
 const update = async (req, res) => {
@@ -67,7 +69,30 @@ const update = async (req, res) => {
   res.send(result);
 };
 
-const deleteOne = async () => (req, res) => {};
+const deleteOne = async (req, res) => {};
+
+const deleteAll = async (req, res) => {
+  const userId = req.user.id ? req.user.id : req.user._id;
+
+  const userInfo = await Member.findOne({ _id: userId });
+
+  if (userInfo.authLV <= 100) {
+    res.send({ status: false, error: '권한 없음' });
+
+    return;
+  }
+
+  const result = await Member.updateOne(
+    { _id: userId },
+    {
+      $set: {
+        diary: [],
+      },
+    },
+  );
+
+  res.send({ result: result, status: true });
+};
 
 module.exports = {
   query,
@@ -76,4 +101,5 @@ module.exports = {
   insert,
   update,
   deleteOne,
+  deleteAll,
 };
