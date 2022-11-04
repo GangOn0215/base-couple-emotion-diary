@@ -32,13 +32,13 @@ const Header = ({ auth, isAuthLogoutAction }) => {
                   <span>{auth.id} </span>
                 </div>
                 <div className='dropdown-content'>
-                  <Link to='/profile'>Profile</Link>
-                  <Link to='/update'>Update</Link>
+                  <Link to='/account/profile'>Profile</Link>
+                  <Link to='/acoount/update'>Update</Link>
                   <button onClick={handleLogout}>Logout</button>
                 </div>
               </>
             ) : (
-              <Link to='/login'>Login</Link>
+              <Link to='/account/login'>Login</Link>
             )}
           </li>
         </ul>

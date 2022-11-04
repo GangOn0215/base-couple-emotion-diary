@@ -208,7 +208,7 @@ const Signup = ({ auth, common, axiosRegisterAction, isAuthLoginAction, axiosReg
 
   useEffect(() => {
     if (auth.isAuth) {
-      navigate('/profile');
+      navigate('/account/profile');
 
       return;
     }
@@ -307,7 +307,7 @@ const Signup = ({ auth, common, axiosRegisterAction, isAuthLoginAction, axiosReg
             </label>
             <button onClick={onHandleSignUp}>Sing Up</button>
             <div className='icon-sign-up'>
-              <Link to='/login'>
+              <Link to='/account/login'>
                 <FontAwesomeIcon icon={faGears} />
                 <label>Login</label>
               </Link>

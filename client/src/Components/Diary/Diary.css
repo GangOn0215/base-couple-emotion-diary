@@ -26,15 +26,24 @@
 	align-items: center;
 }
 .diary .list .list-container {
+	width: 70%;
 	margin: 10px 0;
 }
 .diary .list .list-container .list-item {
-	margin-bottom: 10px;
+	display: flex;
+	justify-content: flex-start;
+	/* width: 400px; */
 	padding: 5px;
-	/* padding-bottom: 0px; */
 	border: 1px solid #bcbcbc;
-	width: 400px;
+	margin-bottom: 10px;
 	box-sizing: border-box;
+}
+.diary .list .list-container .list-item > * {
+	margin-right: 10px;
+}
+.diary .list .list-container .list-item img {
+	object-fit: cover;
+	width: 20%;
 }
 
 /* .diary .list .list-container .list-item a, */
@@ -54,6 +63,9 @@
 	font-size: 0.8em;
 	color: #737373;
 }
+.diary .list .list-container .list-item .info {
+}
+
 .diary .list .list-container p:last-child {
 	border-bottom: none;
 }
@@ -178,7 +190,7 @@
 	}
 	.diary .list .list-container .list-item,
 	.diary .detail {
-		width: 15rem;
+		/* width: 15rem; */
 		overflow-wrap: anywhere;
 	}
 

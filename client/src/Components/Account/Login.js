@@ -85,7 +85,7 @@ const Login = ({ auth, common, axiosLogin, axiosLoginAction, isAuthLoginAction }
 
   useEffect(() => {
     if (auth.isAuth) {
-      navigate('/profile');
+      navigate('/account/profile');
     }
   }, [auth, navigate]);
 
@@ -96,8 +96,6 @@ const Login = ({ auth, common, axiosLogin, axiosLoginAction, isAuthLoginAction }
           <div className='main-site'>
             <span className='loading-span'>Loading</span>
             <img className='loading' alt='' src='/assets/image/loading.png' />
-            {/* <div className='main-header pad-top wrapper' id='mainHeader'></div>
-            <div className='loader loader-7'></div> */}
           </div>
         </>
       ) : (
@@ -120,7 +118,7 @@ const Login = ({ auth, common, axiosLogin, axiosLoginAction, isAuthLoginAction }
               />
               <button onClick={handleLogin}>Login</button>
               <div className='icon-sign-up'>
-                <Link to='/signup'>
+                <Link to='/account/signup'>
                   <FontAwesomeIcon icon={faUser} />
                   <label>Sign Up</label>
                 </Link>

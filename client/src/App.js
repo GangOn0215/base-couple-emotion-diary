@@ -48,11 +48,11 @@ function App() {
               <Route path='/' element={<About />} />
               <Route path='/diary/list' element={<DiaryList />} />
               <Route path='/diary/write' element={<DiaryEditor />} />
-              <Route path='/edit/:dataIdx' element={<DiaryEditor />} />
-              <Route path='/detail/:dataIdx' element={<DiaryDetail />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/signup' element={<Signup />} />
-              <Route path='/profile' element={<Profile />} />
+              <Route path='/diary/edit' element={<DiaryEditor />} />
+              <Route path='/diary/detail' element={<DiaryDetail />} />
+              <Route path='/account/login' element={<Login />} />
+              <Route path='/account/signup' element={<Signup />} />
+              <Route path='/account/profile' element={<Profile />} />
             </Routes>
           </article>
           <footer></footer>
