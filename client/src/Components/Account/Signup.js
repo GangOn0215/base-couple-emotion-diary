@@ -217,7 +217,7 @@ const Signup = ({ auth, common, axiosRegisterAction, isAuthLoginAction, axiosReg
       case 'REGISTER_SUCCESS':
         alert(`${axiosRegister.memberId}님 반갑습니다.`);
 
-        setCookie('x_auth', axiosRegister.token);
+        setCookie('x_auth', axiosRegister.token, { path: '/' });
         isAuthLoginAction(axiosRegister.memberId);
         break;
       case 'REGISTER_FAIL':

@@ -58,7 +58,7 @@ const Login = ({ auth, common, axiosLogin, axiosLoginAction, isAuthLoginAction }
   useEffect(() => {
     switch (axiosLogin.status) {
       case 'LOGIN_SUCCESS':
-        setCookie('x_auth', axiosLogin.token);
+        setCookie('x_auth', axiosLogin.token, { path: '/' });
         isAuthLoginAction(axiosLogin.memberId);
         break;
       case 'LOGIN_FAIL':
