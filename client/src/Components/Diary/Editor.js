@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { useCookies } from 'react-cookie';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Editor = ({ auth, common, handleCreate, handleUpdate, isEdit, diaryList }) => {
   const navigate = useNavigate();
@@ -17,6 +19,7 @@ const Editor = ({ auth, common, handleCreate, handleUpdate, isEdit, diaryList })
     content: '',
     image: '',
     emotion: 3,
+    setDate: new Date(),
     createAt: new Date().getTime(),
     updateAt: null,
   });
@@ -150,6 +153,24 @@ const Editor = ({ auth, common, handleCreate, handleUpdate, isEdit, diaryList })
         <input type='file' id='diary-img' accept='image/*' onChange={onChangeImageFile} />
         {/* <FontAwesomeIcon icon={['fad', 'stroopwafel']} /> */}
       </div>
+      <DatePicker
+        selected={state.setDate}
+        showPopperArrow={false}
+        dateFormat='yyyy-MM-dd'
+        onChange={(date) => {
+          // datePicker 컴포넌트 이기 때문에 파라미터로 날짜가 들어오게 되기에 event 흉내를 내줍니다.
+          let data = { target: { name: 'setDate', value: date } };
+
+          handleChangeState(data);
+        }}
+        style={{
+          backgroundColor: 'aliceblue',
+          height: '24px',
+          borderRadius: '8px',
+          fontSize: '14px',
+          padding: '3px 10px',
+        }}
+      />
       <input
         ref={inputTitle}
         type='text'
@@ -175,7 +196,9 @@ const Editor = ({ auth, common, handleCreate, handleUpdate, isEdit, diaryList })
         <option value={5}>very good</option>
       </select>
       <div className='button-wrap'>
-        <button onClick={isEdit ? handleUpdateSubmit : handleCreateSubmit}>Save</button>
+        <button className='link-button' onClick={isEdit ? handleUpdateSubmit : handleCreateSubmit}>
+          Save
+        </button>
         <button ref={buttonClick} onClick={onHandleClick} className='link-button'>
           <Link to='/diary/list'>List</Link>
         </button>

@@ -88,7 +88,7 @@
 	margin: 0px 3px;
 }
 
-.diary .editor button,
+.diary .editor .link-button,
 .diary .list .list-container .link-button,
 .diary .detail .link-button {
 	margin-bottom: 16px;
@@ -183,6 +183,11 @@
 	margin-bottom: 10px;
 	box-sizing: border-box;
 }
+
+.react-datepicker-wrapper {
+	width: auto !important;
+}
+
 /* 반응형 */
 @media (max-width: 765px) {
 	.diary {
