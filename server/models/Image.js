@@ -11,6 +11,9 @@ const ImageSchema = Schema(
       type: String,
       unique: true,
     },
+    path: {
+      type: String,
+    },
   },
   { timestamps: true },
 );

@@ -46,6 +46,7 @@ const insert = async (req, res) => {
           title: req.body.title,
           content: req.body.content,
           mood: req.body.emotion,
+          diaryDate: req.body.diaryDate,
         },
       },
     },
@@ -76,7 +77,7 @@ const deleteAll = async (req, res) => {
 
   const userInfo = await Member.findOne({ _id: userId });
 
-  if (userInfo.authLV <= 100) {
+  if (userInfo.authLV < 100) {
     res.send({ status: false, error: '권한 없음' });
 
     return;

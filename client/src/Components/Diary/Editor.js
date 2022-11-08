@@ -19,7 +19,7 @@ const Editor = ({ auth, common, handleCreate, handleUpdate, isEdit, diaryList })
     content: '',
     image: '',
     emotion: 3,
-    setDate: new Date(),
+    diaryDate: new Date(),
     createAt: new Date().getTime(),
     updateAt: null,
   });
@@ -96,28 +96,13 @@ const Editor = ({ auth, common, handleCreate, handleUpdate, isEdit, diaryList })
   };
 
   useEffect(() => {
-    if (isEdit) {
-      if (diaryList.length > 0) {
-        let tempList = diaryList.find((item) => item.id === parseInt(dataIdx));
-
-        setState({
-          title: tempList.title,
-          content: tempList.content,
-          emotion: tempList.emotion,
-          createAt: tempList.createAt,
-          updateAt: tempList.updateAt,
-        });
-      }
-    }
-  }, []);
-
-  useEffect(() => {
     if (!auth.isAuth || !cookies.x_auth) {
       navigate('/login');
 
       return;
     }
-  }, [auth]);
+  }, [auth, cookies.x_auth, navigate]);
+
   const buttonClick = useRef();
 
   const onHandleClick = () => {
@@ -151,24 +136,15 @@ const Editor = ({ auth, common, handleCreate, handleUpdate, isEdit, diaryList })
           <img id='preview-img' ref={prevImageRef} src='' alt='' />
         </label>
         <input type='file' id='diary-img' accept='image/*' onChange={onChangeImageFile} />
-        {/* <FontAwesomeIcon icon={['fad', 'stroopwafel']} /> */}
       </div>
       <DatePicker
-        selected={state.setDate}
+        selected={state.diaryDate}
         showPopperArrow={false}
         dateFormat='yyyy-MM-dd'
         onChange={(date) => {
-          // datePicker 컴포넌트 이기 때문에 파라미터로 날짜가 들어오게 되기에 event 흉내를 내줍니다.
-          let data = { target: { name: 'setDate', value: date } };
+          let data = { target: { name: 'diaryDate', value: date } };
 
           handleChangeState(data);
-        }}
-        style={{
-          backgroundColor: 'aliceblue',
-          height: '24px',
-          borderRadius: '8px',
-          fontSize: '14px',
-          padding: '3px 10px',
         }}
       />
       <input

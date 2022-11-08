@@ -34,6 +34,10 @@ const DiarySchema = Schema(
       type: Number,
       default: 0,
     },
+    diaryDate: {
+      type: Date,
+      default: Date.now,
+    },
   },
   { timestamps: true },
 );
