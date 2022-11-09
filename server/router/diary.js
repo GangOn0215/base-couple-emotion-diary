@@ -9,7 +9,7 @@ router.get('/');
 
 router.get('/query', controller.query);
 
-router.get('/row', controller.row);
+router.post('/row', authChecker, controller.row);
 router.post('/lists', authChecker, controller.lists);
 router.post('/insert', authChecker, controller.insert);
 router.post('/update', authChecker, controller.update);

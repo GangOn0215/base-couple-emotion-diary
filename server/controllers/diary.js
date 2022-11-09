@@ -11,7 +11,7 @@ const query = async (req, res) => {
   //row
   //63522484ce189d57cb8b4056
   const diary = await Member.findOne({ 'diary._id': '63522484ce189d57cb8b4056' }, { 'diary.$': 1 });
-  const diaries = await Member.find({}, { diary: 1 });
+  // const diaries = await Member.find({}, { diary: 1 });
   // const diary = await Member.find({}, { '$': 1 });
   // const getUserDiary = await Member.findOne({ id: 'admin' })
   console.log(diary);
@@ -22,12 +22,22 @@ const query = async (req, res) => {
 };
 
 const row = async (req, res) => {
+  // _id: 6350034ab5ac1c7c325cde57 (admin)
+
   let getRow = await Member.find({ 'diary._id': req.query.id }, { 'diary.$': 1 });
-  let diary = [];
+  let sendData = {
+    diary: null,
+    status: 'fail',
+  };
 
-  if (getRow.length > 0) diary = getRow[0].diary[0];
+  if (getRow.length > 0) {
+    sendData.diary = getRow[0].diary[0];
+    sendData.status = 'success';
+  }
 
-  res.send({ diary: diary });
+  console.log('6350034ab5ac1c7c325cde57' == getRow[0]._id);
+
+  res.send(sendData);
 };
 
 const lists = async (req, res) => {

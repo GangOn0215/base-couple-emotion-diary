@@ -21,8 +21,10 @@ const List = ({ auth, common, handleUpdate, handleDelete }) => {
     { icon: faFaceAngry, color: 'red' },
     { icon: faFaceFrown, color: 'red' },
     { icon: faFaceMeh, color: 'orange' },
-    { icon: faFaceGrin, color: 'blue', icon: faFaceGrinBeam, color: 'blue' },
+    { icon: faFaceGrin, color: 'blue' },
+    { icon: faFaceGrinBeam, color: 'blue' },
   ];
+
   const [cookies, removeCookie] = useCookies(['x_auth']);
   const [isLoading, setIsLoading] = useState(false);
   const [lists, setLists] = useState([]);
@@ -68,6 +70,7 @@ const List = ({ auth, common, handleUpdate, handleDelete }) => {
     }
   }, [auth]);
 
+  console.log(mood);
   return (
     <>
       {!isLoading ? (
@@ -81,7 +84,7 @@ const List = ({ auth, common, handleUpdate, handleDelete }) => {
                       <img src='/assets/image/bonobono_profile.jpg' alt='' />
                       <div className='text'>
                         <p className='regdate'>{moment(item.diaryDate).format('YYYY/MM/DD')}</p>
-                        <Link to={`/detail/row/${item._id}`}>
+                        <Link to={`/diary/view?id=${item._id}`}>
                           <p>{item.title}</p>
                         </Link>
                       </div>

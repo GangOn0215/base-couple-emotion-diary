@@ -11,7 +11,7 @@ import About from './Components/About';
 // Diary
 import DiaryList from './Components/Diary/List';
 import DiaryEditor from './Components/Diary/Editor';
-import DiaryDetail from './Components/Diary/Detail';
+import DiaryView from './Components/Diary/View';
 // Account
 import Login from './Components/Account/Login';
 import Signup from './Components/Account/Signup';
@@ -49,7 +49,7 @@ function App() {
               <Route path='/diary/list' element={<DiaryList />} />
               <Route path='/diary/write' element={<DiaryEditor />} />
               <Route path='/diary/edit' element={<DiaryEditor />} />
-              <Route path='/diary/detail' element={<DiaryDetail />} />
+              <Route path='/diary/view' element={<DiaryView />} />
               <Route path='/account/login' element={<Login />} />
               <Route path='/account/signup' element={<Signup />} />
               <Route path='/account/profile' element={<Profile />} />
