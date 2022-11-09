@@ -9,7 +9,7 @@ const View = ({ auth, common }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [lists, setLists] = useState([]);
   const [cookies] = useCookies(['x_auth']);
-
+  const [loading, setLoading] = useState(false);
   const buttonClick = useRef();
 
   const onHandleClick = () => {
@@ -17,41 +17,48 @@ const View = ({ auth, common }) => {
   };
 
   useEffect(() => {
+    setLoading(true);
     const config = { headers: { Authorization: cookies.x_auth } };
 
-    axios.post(`${common.axiosUrl}/diary/row`, {}, config).then((res) => {
-      if (res.data) {
-        console.log(res);
-      }
-    });
+    axios
+      .post(`${common.axiosUrl}/diary/row?id=${searchParams.get('id')}`, {}, config)
+      .then((res) => {
+        setLoading(false);
+        if (res.data.status) {
+          setLists(res.data.diary);
+        }
+      });
   }, []);
 
   return (
-    <div className='detail'>
-      <div className='info'>
-        {/* <p>
-          <span>Title</span> {detailData.title}
-        </p>
-        <p>
-          <span>Author</span> {detailData.author}
-        </p>
-        <p>
-          <span>Content</span> {detailData.content}
-        </p>
-        <p className='date'>
-          <span>Emotion</span> {detailData.emotion}
-        </p>
-        <p className='date'>
-          <span>CreateAt</span> {new Date(detailData.createAt).toLocaleDateString()}
-        </p>
-        <p className='date'>
-          <span>UpdateAt</span> {new Date(detailData.updateAt).toLocaleDateString()}
-        </p> */}
-      </div>
-      <button ref={buttonClick} onClick={onHandleClick} className='link-button'>
-        <Link to={`/list`}>List</Link>
-      </button>
-    </div>
+    <>
+      {loading ? (
+        <></>
+      ) : (
+        <div className='detail'>
+          <div className='info'>
+            <p>
+              <span>Date</span> {new Date(lists.diaryDate).toLocaleDateString()}
+            </p>
+            <p>
+              <span>Title</span> {lists.title}
+            </p>
+            <p>
+              <span>Content</span> {lists.content}
+            </p>
+            <p className='date'>
+              <span>Emotion</span> {lists.mood}
+            </p>
+            <p className='date'>
+              <span>CreateAt</span> {new Date(lists.createdAt).toLocaleDateString()}
+            </p>
+          </div>
+          <button ref={buttonClick} onClick={onHandleClick} className='link-button'>
+            <Link to={`/diary/list`}>List</Link>
+          </button>
+        </div>
+      )}
+    </>
   );
 };
 

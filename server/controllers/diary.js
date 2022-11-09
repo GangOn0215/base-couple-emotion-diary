@@ -35,7 +35,7 @@ const row = async (req, res) => {
     sendData.status = 'success';
   }
 
-  console.log('6350034ab5ac1c7c325cde57' == getRow[0]._id);
+  // console.log('6350034ab5ac1c7c325cde57' == getRow[0]._id);
 
   res.send(sendData);
 };
