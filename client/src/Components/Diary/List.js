@@ -70,7 +70,6 @@ const List = ({ auth, common, handleUpdate, handleDelete }) => {
     }
   }, [auth]);
 
-  console.log(mood);
   return (
     <>
       {!isLoading ? (

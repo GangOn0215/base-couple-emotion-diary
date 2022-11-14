@@ -1,6 +1,7 @@
 .diary {
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	width: 70%;
 	min-height: 70vh;
 	border-left: 1px solid #e7f6f2;
@@ -46,17 +47,21 @@
 	width: 20%;
 }
 
-.diary .list .list-container .list-item .list-svg {
+.diary .list .list-container .list-item .list-svg,
+.diary .detail .info .user .right .list-svg {
 	width: 2rem;
 	height: 2rem;
 }
-.diary .list .list-container .list-item .list-svg.red {
+.diary .list .list-container .list-item .list-svg.red,
+.diary .detail .info .user .right .list-svg.red {
 	color: #ff6f6e;
 }
-.diary .list .list-container .list-item .list-svg.orange {
+.diary .list .list-container .list-item .list-svg.orange,
+.diary .detail .info .user .right .list-svg.orange {
 	color: #ffb246;
 }
-.diary .list .list-container .list-item .list-svg.blue {
+.diary .list .list-container .list-item .list-svg.blue,
+.diary .detail .info .user .right .list-svg.blue {
 	color: #7fc3f2;
 }
 
@@ -67,6 +72,9 @@
 	flex-wrap: wrap;
 }
 
+.diary .detail .info p img {
+	width: 200px;
+}
 .diary .list .list-container .list-item p:last-child,
 .diary .detail .info p:last-child {
 	border-bottom: none;
@@ -91,8 +99,7 @@
 .diary .detail .info p {
 	margin: 0;
 }
-.diary .list .list-container p span,
-.diary .detail .info p span {
+.diary .list .list-container p span {
 	width: 60px;
 	font-weight: bold;
 }
@@ -117,6 +124,9 @@
 	height: 4.5vh;
 	border: none;
 	cursor: pointer;
+}
+.diary .detail .link-button {
+	margin-bottom: 0px;
 }
 
 .diary .list .list-container .link-button a {
@@ -188,20 +198,70 @@
 .diary .detail {
 	display: flex;
 	justify-content: center;
-	flex-direction: column;
-	width: 25rem;
+	flex-direction: row;
+	height: 600px;
+	width: 815px;
+}
+.diary .detail .image {
+	display: flex;
+	width: 60%;
+}
+
+.diary .detail .image img {
+	width: 100%;
+	object-fit: cover;
 }
 
 .diary .detail .info {
 	display: flex;
 	flex-direction: column;
-	min-width: 15rem;
-	border: 1px solid black;
-	padding: 5px;
+	border: 1px solid #dbdbdb;
 	margin-bottom: 10px;
 	box-sizing: border-box;
+	height: 100%;
+	width: 40%;
+	object-fit: contain;
+}
+.diary .detail .info .user {
+	display: flex;
+	padding: 10px 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #efefef;
+	justify-content: space-between;
+}
+.diary .detail .info .user .left {
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+.diary .detail .info .user .left img {
+	margin-right: 0.8rem;
+}
+.diary .detail .info .user .right {
+	display: flex;
 }
 
+.diary .detail .info .text {
+	padding: 0px 1.6rem;
+}
+.diary .detail .info .text .header {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+.diary .detail .info .text .header .title {
+	font-weight: bold;
+}
+.diary .detail .info .text .header .date {
+	font-size: 0.8rem;
+}
+
+.diary .detail .info .text p {
+	margin-bottom: 10px;
+}
+
+.diary .detail .info .text .key {
+}
 .react-datepicker-wrapper {
 	width: auto !important;
 }
