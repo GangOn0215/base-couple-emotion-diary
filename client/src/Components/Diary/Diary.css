@@ -202,6 +202,7 @@
 	height: 600px;
 	width: 815px;
 }
+
 .diary .detail .image {
 	display: flex;
 	width: 60%;
@@ -242,7 +243,11 @@
 }
 
 .diary .detail .info .text {
+	overflow: scroll;
 	padding: 0px 1.6rem;
+}
+.diary .detail .info .text::-webkit-scrollbar {
+	display: none;
 }
 .diary .detail .info .text .header {
 	display: flex;
@@ -286,4 +291,17 @@
 		justify-content: space-evenly;
 		margin-top: 5px;
 	}
+	.diary .detail {
+		flex-direction: column;
+		align-items: center;
+	}
+	.diary .detail .image,
+	.diary .detail .info
+	 {
+		width: 80%;
+	}
+	.diary .detail .info .text {
+		height: 21rem;
+	}
+	
 }
