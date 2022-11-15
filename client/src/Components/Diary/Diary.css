@@ -217,7 +217,6 @@
 	display: flex;
 	flex-direction: column;
 	border: 1px solid #dbdbdb;
-	margin-bottom: 10px;
 	box-sizing: border-box;
 	height: 100%;
 	width: 40%;
@@ -252,7 +251,10 @@
 .diary .detail .info .text .header {
 	display: flex;
 	justify-content: space-between;
-	margin-bottom: 10px;
+	position: fixed;
+	background-color: white;
+	width: 272px;
+	height: 30px;
 }
 .diary .detail .info .text .header .title {
 	font-weight: bold;
@@ -262,6 +264,7 @@
 }
 
 .diary .detail .info .text p {
+	margin-top: 30px;
 	margin-bottom: 10px;
 }
 
@@ -280,6 +283,7 @@
 	.diary .detail {
 		/* width: 15rem; */
 		overflow-wrap: anywhere;
+		padding: 10px 0;
 	}
 
 	.diary .list .list-container .handleButton button {
