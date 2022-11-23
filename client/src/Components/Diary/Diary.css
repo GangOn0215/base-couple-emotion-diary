@@ -158,7 +158,7 @@
 }
 .diary .editor input,
 .diary .editor textarea {
-	font-size: 1.1em;
+	/* font-size: 1.1em; */
 	resize: vertical;
 }
 .diary .editor .image-container label {

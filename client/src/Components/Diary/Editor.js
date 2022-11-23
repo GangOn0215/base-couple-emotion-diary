@@ -147,23 +147,12 @@ const Editor = ({ auth, common, handleCreate, handleUpdate, isEdit, diaryList })
           handleChangeState(data);
         }}
       />
-      <input
-        ref={inputTitle}
-        type='text'
-        name='title'
-        placeholder='title'
-        value={state.title}
-        onChange={handleChangeState}
-      />
-      <textarea
-        ref={textareaContent}
-        type='text'
-        name='content'
-        placeholder='content'
-        value={state.content}
-        onChange={handleChangeState}
-        spellCheck='false'
-      />
+      <input    ref={inputTitle}      type='text' name='title'   placeholder='title'   value={state.title}   onChange={handleChangeState} />
+      <textarea ref={textareaContent} type='text' name='content' placeholder='content' value={state.content} onChange={handleChangeState} spellCheck='false' />
+      <div>
+        <input type="checkbox" />
+        <label for>비밀글</label> 
+      </div>
       <select name='emotion' value={state.emotion ? state.emotion : 3} onChange={handleChangeState}>
         <option value={1}>very bad</option>
         <option value={2}>bad</option>
