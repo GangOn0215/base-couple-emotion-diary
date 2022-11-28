@@ -7,6 +7,14 @@ import { connect } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import {
+  faFaceAngry, // angry
+  faFaceGrin, // happy
+  faFaceSadTear, // sad
+  faFaceMeh, // soso
+  faFaceFrown, // 서운
+  faFaceGrinBeam, // very happy
+} from '@fortawesome/free-solid-svg-icons';
 
 const Editor = ({ auth, common, handleCreate, handleUpdate, isEdit, diaryList }) => {
   const navigate = useNavigate();
@@ -149,12 +157,18 @@ const Editor = ({ auth, common, handleCreate, handleUpdate, isEdit, diaryList })
       />
       <input    ref={inputTitle}      type='text' name='title'   placeholder='title'   value={state.title}   onChange={handleChangeState} />
       <textarea ref={textareaContent} type='text' name='content' placeholder='content' value={state.content} onChange={handleChangeState} spellCheck='false' />
-      <div>
-        <input type="checkbox" />
-        <label for>비밀글</label> 
+      <div className="checkbox-wrap">
+        <div className="item">
+          <input type="checkbox" id="isPrivate" />
+          <label htmlFor="isPrivate">비밀</label> 
+        </div>
+        <div className="item">
+          <input type="checkbox" id="isCouple" />
+          <label htmlFor="isCouple">애인만 공개</label> 
+        </div>
       </div>
       <select name='emotion' value={state.emotion ? state.emotion : 3} onChange={handleChangeState}>
-        <option value={1}>very bad</option>
+        <option value={1}>very bad <FontAwesomeIcon icon={faFaceAngry}/> </option>
         <option value={2}>bad</option>
         <option value={3}>soso</option>
         <option value={4}>good</option>
